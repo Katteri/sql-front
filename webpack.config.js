@@ -54,11 +54,11 @@ export default {
     path: path.resolve(dirname, 'dist'),
   },
   devServer: {
+    historyApiFallback: true,
     static: path.resolve(dirname, 'dist'),
     port: 9000,
     hot: true,
     open: true,
-
   },
   ignoreWarnings: [
     {
