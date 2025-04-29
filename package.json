@@ -1,0 +1,41 @@
+{
+  "name": "sql-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.jsx",
+  "type": "module",
+  "scripts": {
+    "start": "webpack serve",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ekaterina Domashova",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/eslint-parser": "^7.27.0",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-react": "^7.26.3",
+    "@eslint/js": "^9.25.1",
+    "autoprefixer": "^10.4.21",
+    "babel-loader": "^10.0.0",
+    "classnames": "^2.5.1",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.0.0",
+    "html-webpack-plugin": "^5.6.3",
+    "postcss": "^8.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^4.1.4",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "react-router-dom": "^7.5.3"
+  }
+}
