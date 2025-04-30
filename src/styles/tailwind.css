@@ -1,3 +1,15 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@font-face {
+  font-family: 'Buran USSR';
+  src: url('../assets/fonts/BuranUSSR.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Imperial Web';
+  src: url('../assets/fonts/ImperialWeb.ttf') format('truetype');
+  font-display: swap;
+}

@@ -3,6 +3,10 @@ export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        buran: ['Buran USSR', 'sans-serif'],
+        imperial: ['Imperial Web', 'sans-serif'],
+      },
       colors: {
         'dirty-red': '#691F0C',
         'wow-red': '#DC3C0C',

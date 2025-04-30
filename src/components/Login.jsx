@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import cn from 'classnames';
 
 const Login = () => {
@@ -51,8 +52,9 @@ const Login = () => {
   }
 
   return (
-    <div className="w-screen h-screen bg-sand flex flex-wrap justify-center content-center">
-      <div className="w-full max-w-xs">
+    <div className="w-screen h-screen bg-sand flex flex-col flex-wrap justify-center content-center">
+      <p className='text-8xl text-wow-red font-buran'>SQL Фронт</p>
+      <div className="w-full max-w-xs self-center">
         <form
           className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
           onSubmit={handleSubmit}
@@ -69,7 +71,7 @@ const Login = () => {
                 {'border-wow-red': errors.username.length > 0})}
               id="username"
               type="text"
-              placeholder="Логин"
+              placeholder="user"
               value={username}
               onChange={handleUsernameChange}
               disabled={state==='sending'}
@@ -106,7 +108,7 @@ const Login = () => {
               Войти
             </button>
             <p className="mt-3 text-sm">Еще нет аккаунта?</p>
-            <a href="/register" className="inline-flex items-center hover:underline text-sm">Зарегистрируйтесь</a> 
+            <Link to="/register" className="inline-flex items-center hover:underline text-sm">Зарегистрируйтесь</Link> 
           </div>          
         </form>
       </div>
