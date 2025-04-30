@@ -4,3 +4,4 @@
 - React
 - Webpack
 - Tailwind CSS
+- CodeMirror (for SQL editor)

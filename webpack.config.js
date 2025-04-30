@@ -36,6 +36,12 @@ export default {
           filename: 'fonts/[name][ext][query]',
         },
       },
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false,
+        },
+      }
     ],
   },
   resolve: {
