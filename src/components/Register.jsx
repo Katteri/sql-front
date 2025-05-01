@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useNavigate } from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
+import { register } from '../api/auth'; 
 
 const Register = () => {
   const [state, setState] = useState('filling'); // 'sending', 'success', 'failed'
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [serverError, setServerError] = useState('');
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({
     email: '',
     username: '',
@@ -25,7 +28,7 @@ const Register = () => {
     setPassword(e.target.value.replace(' ', ''));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -62,9 +65,22 @@ const Register = () => {
     if (!newErrors.username && !newErrors.password) {
       setState('sending');
 
-      // TODO: add backend interact
+      try {
+        const response = await register({ login: username, email, password });
+        setState('success');
+        console.log(response);
+      } catch(error) {
+        setState('failed');
+        setServerError(error);
+      }
     }
   }
+
+  useEffect(() => {
+    if (state === 'success') {
+      navigate('/login');
+    }
+  }, [state]);
 
   return (
     <div className="w-screen h-screen bg-sand flex flex-col flex-wrap justify-center content-center">
@@ -133,7 +149,9 @@ const Register = () => {
               autoComplete="new-password"
             />
             {errors.password.length > 0? <p className="text-wow-red text-xs italic">{errors.password}</p> : null}
+            
           </div>
+          {serverError && <p className="text-wow-red text-xs italic mb-5">{serverError}</p>}
           <div className="flex flex-col items-center justify-center">
             <button
               className={cn({"bg-wow-red": state!=='sending', "hover:bg-dirty-red": state!=='sending', "bg-wow-gray": state==='sending'}, "text-white", "font-bold", "w-full","py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}

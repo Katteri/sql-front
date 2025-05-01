@@ -45,6 +45,7 @@
     "@codemirror/lang-sql": "^6.8.0",
     "@uiw/codemirror-theme-duotone": "^4.23.11",
     "@uiw/react-codemirror": "^4.23.11",
+    "axios": "^1.9.0",
     "react-router-dom": "^7.5.3"
   }
 }
