@@ -41,7 +41,11 @@ export default {
         resolve: {
           fullySpecified: false,
         },
-      }
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        type: 'asset/resource'
+      },
     ],
   },
   resolve: {

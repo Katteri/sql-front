@@ -10,7 +10,7 @@ export default {
       colors: {
         'dirty-red': '#691F0C',
         'wow-red': '#DC3C0C',
-        sand: '#D3C0B2',
+        sand: '#F8F2DE',
         'wow-gray': '#7A7A78',
         'wow-white': '#E1E1E1',
         'wow-black': '#1D1816',
