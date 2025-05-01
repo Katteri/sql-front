@@ -6,15 +6,19 @@ import Register from './components/Register';
 import Profile from './components/Profile';
 import Exercise from './components/Exercise';
 
+import Navigation from './components/Navigation';
+
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainPage/> } />
+        <Route path='/' element={<Navigation /> } >
+          <Route path="/" element={<MainPage/> } />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/exercise" element={<Exercise />} />
+        </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/exercise" element={<Exercise />} />
       </Routes>
     </BrowserRouter>
   );

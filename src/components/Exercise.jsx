@@ -70,50 +70,6 @@ user_id |  login   |            email            | total_score
 
   return (
     <div className="bg-sand w-full min-h-screen">
-      <nav className="w-full bg-wow-white text-wow-gray sticky top-0 z-10">
-        <ul className="flex flex-row justify-end gap-5 px-8 py-2">
-          <li>
-            <Link
-              to="/"
-              className="hover:underline"
-            >
-              Главная
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/profile"
-              className="hover:underline"
-            >
-              Задачи
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/profile"
-              className="hover:underline"
-            >
-              Достижения
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/profile"
-              className="hover:underline"
-            >
-              Мой профиль
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/logout"
-              className="hover:underline"
-            >
-              Выйти
-            </Link>
-          </li>
-        </ul>
-      </nav>
       <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
         <h3 className="text-xl text-dirty-red font-imperial">Миссия 0.2</h3>
         <h2 className="text-5xl text-dirty-red font-buran self-center mb-10">География сражений</h2>
