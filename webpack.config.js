@@ -44,7 +44,7 @@ export default {
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
-        type: 'asset/resource'
+        type: 'asset/resource',
       },
     ],
   },

@@ -33,7 +33,7 @@ const MainPage = () => {
             <h1 className='text-8xl text-wow-red font-buran mt-24 mb-10'>SQL Фронт: битва за данные</h1>
             <p className='text-dirty-red font-imperial text-2xl justify-end mb-10'>Освой SQL, вспоминая подвиги Победы</p>
           </div>
-          <div className='text-lg font-bold text-dirty-red flex flex-col justify-between content-center w-4/5 mb-8'>
+          <div className='text-lg text-dirty-red flex flex-col justify-between content-center w-4/5 mb-8'>
             <p>Великая Отечественная война не только испытание, но и величайшее наследие мужества, стратегии и силы разума.<br/>  
               Сегодня мы приглашаем тебя продолжить ту борьбу — не с оружием, а с данными. В роли фронтового аналитика ты узнаешь, как знания и логика могут стать мощным оружием в любые времена.</p>
           </div>

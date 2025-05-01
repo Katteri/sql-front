@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import cn from "classnames";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import CodeMirror from "@uiw/react-codemirror";
 import { sql, PostgreSQL } from "@codemirror/lang-sql";
 import { duotoneLight } from "@uiw/codemirror-theme-duotone";
@@ -74,18 +74,42 @@ user_id |  login   |            email            | total_score
         <ul className="flex flex-row justify-end gap-5 px-8 py-2">
           <li>
             <Link
-              to="/login"
+              to="/"
               className="hover:underline"
             >
-              Войти
+              Главная
             </Link>
           </li>
           <li>
             <Link
-              to="/register"
+              to="/profile"
               className="hover:underline"
             >
-              Зарегистрироваться
+              Задачи
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/profile"
+              className="hover:underline"
+            >
+              Достижения
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/profile"
+              className="hover:underline"
+            >
+              Мой профиль
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/logout"
+              className="hover:underline"
+            >
+              Выйти
             </Link>
           </li>
         </ul>
@@ -111,15 +135,13 @@ user_id |  login   |            email            | total_score
           <div>
             <button
               className={cn({"bg-wow-red": stateRun!=='sending', "hover:bg-dirty-red": stateRun!=='sending', "bg-wow-gray": stateRun==='sending'}, "text-white", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline", "mr-4")}
-              type="submit"
               disabled={stateRun==='sending'}
               onClick={handleRun}
             >
               Выполнить
             </button>
             <button
-              className={cn("border", "border-wow-gray", "hover:bg-wow-gray", "hover:border-wow-gray", "hover:text-wow-white", "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
-              type="submit"
+              className={cn("border", "border-wow-gray", "hover:bg-wow-gray", "hover:border-wow-gray", "hover:text-white", "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
               onClick={() => showDB === 'hide'? setShowDB('show') : setShowDB('hide')}
             >
               {showDB === 'hide'? 'Показать схему БД' : 'Скрыть схему БД'}
@@ -127,20 +149,18 @@ user_id |  login   |            email            | total_score
           </div>
           <div>
             <button
-              className={cn("border", "border-wow-gray", {"hover:bg-wow-gray": !clue1, "hover:border-wow-gray": !clue1, "hover:text-wow-white": !clue1}, "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline", "mr-4")}
-              type="submit"
+              className={cn("border", "border-wow-gray", {"hover:bg-wow-gray": !clue1, "hover:border-wow-gray": !clue1, "hover:text-white": !clue1}, "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline", "mr-4")}
               disabled={clue1} //false когда хватает баллов
               onClick={handleClue1}
             >
               Подсказка
             </button>
             <button
-              className={cn("border", "border-wow-gray", {"hover:bg-wow-gray": clue1 && !clue2, "hover:border-wow-gray": clue1 && !clue2, "hover:text-wow-white": clue1 && !clue2}, "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
-              type="submit"
+              className={cn("border", "border-wow-gray", {"hover:bg-wow-gray": clue1 && !clue2, "hover:border-wow-gray": clue1 && !clue2, "hover:text-white": clue1 && !clue2}, "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
               disabled={!clue1 || clue1 && clue2} //false когда взята подсказка1 и хватает баллов
               onClick={handleClue2}
             >
-              Подсказка 2
+              Ожидаемый результат
             </button>
           </div>
         </div>
@@ -162,6 +182,11 @@ user_id |  login   |            email            | total_score
           <pre className="bg-wow-black text-wow-white p-4 rounded font-mono whitespace-pre-wrap">
             {errors || result}
           </pre>
+        </div>
+        <div className="flex justify-center mt-10">
+          <Link to="/tasks" className={cn("border", "border-wow-gray", "hover:bg-wow-gray", "hover:border-wow-gray", "hover:text-white", "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}>
+            Ко всем задачам
+          </Link>
         </div>
       </div>
       
