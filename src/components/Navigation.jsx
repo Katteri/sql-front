@@ -44,7 +44,7 @@ const Navigation = () => {
           </li>
           <li>
             <Link
-              to="/profile"
+              to="/achievements"
               className="hover:underline"
             >
               Достижения

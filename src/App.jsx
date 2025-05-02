@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './components/MainPage'
 import Login from './components/Login';
 import Register from './components/Register';
+import Achievements from './components/Achievements';
 import Profile from './components/Profile';
 import Exercise from './components/Exercise';
 
@@ -14,6 +15,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Navigation /> } >
           <Route path="/" element={<MainPage/> } />
+          <Route path="/achievements" element={<Achievements />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/exercise" element={<Exercise />} />
         </Route>
