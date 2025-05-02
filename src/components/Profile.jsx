@@ -73,45 +73,121 @@ const Profile = () => {
       <section id="achievement" className="min-h-screen mb-10">
         <p className="text-2xl text-center text-dirty-red font-imperial mb-10">Мои достижения</p>
         <div className="flex flex-1 flex-col gap-6">
+          
           <p className="text-xl font-imperial text-dirty-red">Боевые достижения</p>
-          <div className="flex flex-col gap-5">
-            <div className="border-t pt-2 border-dirty-red">
-              <p className="text-lg bold text-dirty-red">🎖 "Первая кровь"</p>
-              <p className="text-lg text-dirty-red">Первый шаг к победе — самый важный. Так начинался путь многих героев ВОВ</p>
-              <p className="text-lg text-dirty-red mt-4">Решить первую задачу любого уровня</p>
+          <div className="flex flex-col gap-5 mb-5">
+                
+            <div className="border-t pt-4 border-dirty-red group">
+              <div className="flex gap-4">
+                <p className="text-5xl self-center">🎖</p>
+                <div>
+                  <p className="text-lg text-dirty-red font-bold">Первая кровь</p>
+                  <p className="text-lg text-dirty-red">Первый шаг к победе — самый важный. Так начинался путь многих героев ВОВ</p>
+                  
+                  {/* Плавно появляющийся текст */}
+                  <div className="overflow-hidden transition-all duration-500 max-h-0 group-hover:max-h-[100px]">
+                    <p className="text-lg text-dirty-red mt-4">
+                      Решить первую задачу любого уровня
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="border-t pt-2 border-dirty-red">
-              <p className="text-lg text-dirty-red">📜 "Стратег-новичок"</p>
-              <p className="text-lg text-dirty-red">В 1941 году советские солдаты учились воевать в тяжелейших условиях. Ты на верном пути!</p>
-              <p className="text-lg text-dirty-red mt-4">Собрать все 50 архивных документов (открываются после решения задач)</p>
+
+            <div className="border-t pt-4 border-dirty-red group">
+              <div className="flex gap-4">
+                <p className="text-5xl self-center">📜</p>
+                <div>
+                  <p className="text-lg text-dirty-red font-bold">Стратег-новичок</p>
+                  <p className="text-lg text-dirty-red">В 1941 году советские солдаты учились воевать в тяжелейших условиях. Ты на верном пути!</p>
+                  
+                  {/* Плавно появляющийся текст */}
+                  <div className="overflow-hidden transition-all duration-500 max-h-0 group-hover:max-h-[100px]">
+                    <p className="text-lg text-dirty-red mt-4">
+                      Собрать все 50 архивных документов (открываются после решения задач)
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
           <p className="text-xl font-imperial text-dirty-red">Боевые достижения</p>
-          <div className="flex flex-col gap-5">
-            <div className="border-t pt-2 border-dirty-red">
-              <p className="text-lg bold text-dirty-red">🎖 "Первая кровь"</p>
-              <p className="text-lg text-dirty-red">Первый шаг к победе — самый важный. Так начинался путь многих героев ВОВ</p>
-              <p className="text-lg text-dirty-red mt-4">Решить первую задачу любого уровня</p>
+          <div className="flex flex-col gap-5 mb-5">
+                
+            <div className="border-t pt-4 border-dirty-red group">
+              <div className="flex gap-4">
+                <p className="text-5xl self-center">🎖</p>
+                <div>
+                  <p className="text-lg text-dirty-red font-bold">Первая кровь</p>
+                  <p className="text-lg text-dirty-red">Первый шаг к победе — самый важный. Так начинался путь многих героев ВОВ</p>
+                  
+                  {/* Плавно появляющийся текст */}
+                  <div className="overflow-hidden transition-all duration-500 max-h-0 group-hover:max-h-[100px]">
+                    <p className="text-lg text-dirty-red mt-4">
+                      Решить первую задачу любого уровня
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="border-t pt-2 border-dirty-red">
-              <p className="text-lg text-dirty-red">📜 "Стратег-новичок"</p>
-              <p className="text-lg text-dirty-red">В 1941 году советские солдаты учились воевать в тяжелейших условиях. Ты на верном пути!</p>
-              <p className="text-lg text-dirty-red mt-4">Собрать все 50 архивных документов (открываются после решения задач)</p>
+
+            <div className="border-t pt-4 border-dirty-red group">
+              <div className="flex gap-4">
+                <p className="text-5xl self-center">📜</p>
+                <div>
+                  <p className="text-lg text-dirty-red font-bold">Стратег-новичок</p>
+                  <p className="text-lg text-dirty-red">В 1941 году советские солдаты учились воевать в тяжелейших условиях. Ты на верном пути!</p>
+                  
+                  {/* Плавно появляющийся текст */}
+                  <div className="overflow-hidden transition-all duration-500 max-h-0 group-hover:max-h-[100px]">
+                    <p className="text-lg text-dirty-red mt-4">
+                      Собрать все 50 архивных документов (открываются после решения задач)
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
           <p className="text-xl font-imperial text-dirty-red">Боевые достижения</p>
-          <div className="flex flex-col gap-5">
-            <div className="border-t pt-2 border-dirty-red">
-              <p className="text-lg bold text-dirty-red">🎖 "Первая кровь"</p>
-              <p className="text-lg text-dirty-red">Первый шаг к победе — самый важный. Так начинался путь многих героев ВОВ</p>
-              <p className="text-lg text-dirty-red mt-4">Решить первую задачу любого уровня</p>
+          <div className="flex flex-col gap-5 mb-5">
+                
+            <div className="border-t pt-4 border-dirty-red group">
+              <div className="flex gap-4">
+                <p className="text-5xl self-center">🎖</p>
+                <div>
+                  <p className="text-lg text-dirty-red font-bold">Первая кровь</p>
+                  <p className="text-lg text-dirty-red">Первый шаг к победе — самый важный. Так начинался путь многих героев ВОВ</p>
+                  
+                  {/* Плавно появляющийся текст */}
+                  <div className="overflow-hidden transition-all duration-500 max-h-0 group-hover:max-h-[100px]">
+                    <p className="text-lg text-dirty-red mt-4">
+                      Решить первую задачу любого уровня
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="border-t pt-2 border-dirty-red">
-              <p className="text-lg text-dirty-red">📜 "Стратег-новичок"</p>
-              <p className="text-lg text-dirty-red">В 1941 году советские солдаты учились воевать в тяжелейших условиях. Ты на верном пути!</p>
-              <p className="text-lg text-dirty-red mt-4">Собрать все 50 архивных документов (открываются после решения задач)</p>
+
+            <div className="border-t pt-4 border-dirty-red group">
+              <div className="flex gap-4">
+                <p className="text-5xl self-center">📜</p>
+                <div>
+                  <p className="text-lg text-dirty-red font-bold">Стратег-новичок</p>
+                  <p className="text-lg text-dirty-red">В 1941 году советские солдаты учились воевать в тяжелейших условиях. Ты на верном пути!</p>
+                  
+                  {/* Плавно появляющийся текст */}
+                  <div className="overflow-hidden transition-all duration-500 max-h-0 group-hover:max-h-[100px]">
+                    <p className="text-lg text-dirty-red mt-4">
+                      Собрать все 50 архивных документов (открываются после решения задач)
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
         </div>
         <div className="flex justify-center mt-14">
           <Link to="/tasks" className="border border-wow-gray hover:bg-wow-gray hover:border-wow-gray hover:text-white text-wow-gray py-2 px-4 rounded focus:outline-none focus:shadow-outline">
