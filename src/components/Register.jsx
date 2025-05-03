@@ -66,12 +66,11 @@ const Register = () => {
       setState('sending');
 
       try {
-        const response = await api.post('auth/register', { login: username, email, password });
+        await api.post('auth/register', { login: username, email, password });
         setState('success');
-        console.log(response);
       } catch(error) {
         setState('failed');
-        setServerError(error.detail.msg);
+        setServerError(error.response.data.detail);
       }
     }
   }
