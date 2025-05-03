@@ -6,7 +6,7 @@ const ProgressBar = ({ currentValue, maxValue }) => {
   useEffect(() => {
     const newPercentage = `${(currentValue * 100)/maxValue}%`;
     setPercentage(newPercentage);
-  }, []);
+  }, [currentValue, maxValue]);
 
   return (
     <div className="flex w-full h-3 bg-wow-white overflow-hidden"

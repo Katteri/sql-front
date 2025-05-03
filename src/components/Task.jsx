@@ -1,12 +1,18 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import cn from "classnames";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CodeMirror from "@uiw/react-codemirror";
 import { sql, PostgreSQL } from "@codemirror/lang-sql";
 import { duotoneLight } from "@uiw/codemirror-theme-duotone";
+import api from "./utils/api";
 import databaseSchema from "../assets/image.png";
 
-const Exercise = () => {
+const Task = () => {
+  const { missionID, taskID } = useParams();
+  const [data, setData] = useState({
+    title: '',
+    description: '',
+  });
   const [stateRun, setStateRun] = useState('filling'); // 'sending', 'success', 'failed'
   const [stateSubmit, setStateSubmit] = useState('filling'); // 'execute', 'sending'
   const [showDB, setShowDB] = useState('hide'); // 'show'
@@ -15,6 +21,23 @@ const Exercise = () => {
   const [errors, setErrors] = useState('');
   const [clue1, setClue1] = useState('');
   const [clue2, setClue2] = useState('');
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/api/missions/${missionID}/tasks/${taskID}`);
+        const newData = {
+          title: response.data.title,
+          description: response.data.description,
+        };
+        setData(newData);
+      } catch (error) {
+        console.log(error.response.data.detail);
+        // что-то делать с ошибкой
+      }
+    };
+    getData();
+  }, []);
 
   const onChange = useCallback((val) => {
     setValue(val); // сохраняем значение
@@ -71,9 +94,9 @@ user_id |  login   |            email            | total_score
   return (
     <div className="bg-sand w-full min-h-screen">
       <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
-        <h3 className="text-xl text-dirty-red font-imperial">Миссия 0.2</h3>
-        <h2 className="text-5xl text-dirty-red font-buran self-center mb-10">География сражений</h2>
-        <p className="text-lg text-dirty-red mb-5">Определите все боевые операции, проведенные в Сталинграде. Результаты помогут оценить стратегическую значимость этого региона.</p>
+      <h3 className="text-xl text-dirty-red font-imperial">Миссия {missionID}.{taskID}</h3>
+        <h2 className="text-5xl text-dirty-red font-buran self-center mb-10">{data.title}</h2>
+        <p className="text-lg text-dirty-red mb-5">{data.description}</p>
         <CodeMirror
           className="w-full self-center text-base"
           value={value}
@@ -150,4 +173,4 @@ user_id |  login   |            email            | total_score
   );
 };
 
-export default Exercise;
+export default Task;

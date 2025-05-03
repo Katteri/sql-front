@@ -104,7 +104,7 @@ const Profile = () => {
       <section id="achievement" className="mb-10">
         <p className="text-2xl text-center text-dirty-red font-imperial mb-10">Мои достижения</p>
         <div className="flex flex-col gap-6">
-
+          {!data.achievements && <p className="text-lg text-dirty-red">Решайте задачи, чтобы получить достижение</p>}
           {Object.entries(data.achievements).map(([category, achievements]) => (
             <div key={category}>
               <p className="text-xl font-imperial text-dirty-red mb-4">{category}</p>

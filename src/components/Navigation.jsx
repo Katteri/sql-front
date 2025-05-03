@@ -44,7 +44,7 @@ const Navigation = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/exercise" className={linkClass("/exercise")}>
+                <Link to="/missions" className={linkClass("/exercise")}>
                   Задачи
                 </Link>
               </li>
