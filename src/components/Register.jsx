@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import { register } from '../api/auth'; 
+import api from './utils/api'; 
 
 const Register = () => {
   const [state, setState] = useState('filling'); // 'sending', 'success', 'failed'
@@ -66,12 +66,12 @@ const Register = () => {
       setState('sending');
 
       try {
-        const response = await register({ login: username, email, password });
+        const response = await api.post('auth/register', { login: username, email, password });
         setState('success');
         console.log(response);
       } catch(error) {
         setState('failed');
-        setServerError(error);
+        setServerError(error.detail.msg);
       }
     }
   }
