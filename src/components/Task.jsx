@@ -25,7 +25,7 @@ const Task = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/api/missions/${missionID}/tasks/${taskID}`);
+        const response = await api.get(`/missions/${missionID}/tasks/${taskID}`);
         const newData = {
           title: response.data.title,
           description: response.data.description,

@@ -18,17 +18,17 @@ const Tasks = () => {
       }
     };
     getData();
-  });
+  }, []);
 
   const handleClick = (missionId, taskId) => {
-    navigate(`/mission/${missionId}/task/${taskId}`);
+    navigate(`/missions/${missionId}/task/${taskId}`);
   }
 
   return (
     <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
       <h2 className="text-7xl text-wow-red font-buran self-center mt-5 mb-20">Задачи</h2>
 
-      {Object.keys(data).map((missionId) => (
+      {data ? Object.keys(data).map((missionId) => (
         <div key={missionId} className="flex flex-1 flex-col gap-8 mb-5">
           <p className="text-xl font-imperial text-dirty-red">Миссия {missionId}</p>
 
@@ -46,7 +46,7 @@ const Tasks = () => {
             ))}
           </div>
         </div>
-      ))}
+      )) : null}
 
     </div>
   );

@@ -61,6 +61,7 @@ export default {
     clean: true,
     filename: 'index.js',
     path: path.resolve(dirname, 'dist'),
+    publicPath: '/',
   },
   devServer: {
     historyApiFallback: true,

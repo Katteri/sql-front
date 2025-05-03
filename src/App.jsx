@@ -15,7 +15,7 @@ import Navigation from './components/Navigation';
 const App = () => {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/">
         <Routes>
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />
