@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import { useAuth } from './context/AuthContext';
 import api from './utils/api.js';
 
 const Login = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [state, setState] = useState('filling'); // 'sending', 'success', 'failed'
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -53,11 +54,11 @@ const Login = () => {
 
       try {
         const response = await api.post('auth/login', { login: username, password });
-        login(response.access_token);
+        login(response.data.access_token);
         setState('success');
       } catch (error) {
         setState('failed');
-        setServerError(error.detail.msg);
+        setServerError(error.response.data.detail);
       }
 
     }
@@ -65,7 +66,7 @@ const Login = () => {
 
   useEffect(() => {
     if (state === 'success') {
-      setTimeout(() => navigate('/progile'), 1000);
+      setTimeout(() => navigate('/profile'), 1000);
     }
   }, [state]);
 

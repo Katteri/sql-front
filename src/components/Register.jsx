@@ -55,7 +55,7 @@ const Register = () => {
     if (password.length === 0) {
       newErrors.password = 'Введите пароль';
     } else if (!regPasswd.test(password)) {
-      newErrors.password = 'Некорректный пароль';
+      newErrors.password = 'Введите пароль от 8 символов';
     } else {
       newErrors.password = '';
     }
