@@ -69,7 +69,7 @@ const Profile = () => {
 
         </div>
         <div className="flex justify-center mt-14">
-          <Link to="/tasks" className="border border-wow-gray hover:bg-wow-gray hover:border-wow-gray hover:text-white text-wow-gray py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          <Link to="/achievements" className="border border-wow-gray hover:bg-wow-gray hover:border-wow-gray hover:text-white text-wow-gray py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Ко всем достижениям
           </Link>
         </div>
