@@ -20,7 +20,7 @@ const Task = () => {
   const [result, setResult] = useState('Выполните запрос, чтобы увидеть результат');
   const [errors, setErrors] = useState('');
   const [clue, setClue] = useState('');
-  const [expectedResult, setExpectedResult] = useState('');
+  const [expectedResult, setExpectedResult] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -56,7 +56,7 @@ const Task = () => {
 
     if (!newErrors) {
       setStateRun('sending');
-      const response = api.post(`missions/${missionID}/tasks/${taskID}/run`, { sql_query: currentValue });
+      const response = await api.post(`missions/${missionID}/tasks/${taskID}/run`, { sql_query: currentValue });
       setResult(response.data);
       setStateRun('executed');
     }
@@ -67,7 +67,7 @@ const Task = () => {
 
     setStateSubmit('sending');
     try {
-      const response = api.post(`missions/${missionID}/tasks/${taskID}/run`, { sql_query: currentValue });
+      const response = await api.post(`missions/${missionID}/tasks/${taskID}/run`, { sql_query: currentValue });
       console.log(response.data);
       setStateSubmit('success');
     } catch {
@@ -85,7 +85,21 @@ const Task = () => {
     e.preventDefault();
 
     const response = await api.get(`missions/${missionID}/tasks/${taskID}/expected_result`); // потом добавится работа с баллами
-    setExpectedResult(response.data.expected_result.data);
+    const recieved = response.data.expected_result.data;
+    const newExpectedResult = (
+      <div>
+        <div className="flex gap-2">
+          {recieved.columns.map(column => <p>{column}</p>)}
+        </div>
+        {recieved.data.map(row =>
+          <div className="flex gap-2">
+            {row.map(data => <p>{data}</p>)}
+          </div>
+        )}        
+        <p>row_count: {recieved.row_count}</p>
+      </div>
+    );
+    setExpectedResult(newExpectedResult);
   }
 
   return (
@@ -93,7 +107,7 @@ const Task = () => {
       <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
         <div className="flex justify-between">
           <h3 className="text-xl text-dirty-red font-imperial">Миссия {missionID}.{taskID}</h3>
-          <p className="text-xl font-imperial text-dirty-red">баллы: 500</p> // TODO: заглушку убрать
+          <p className="text-xl font-imperial text-dirty-red">баллы: 500</p> {/*TODO: убрать заглушку*/}
         </div>
         <h2 className="text-5xl text-dirty-red font-buran self-center mb-10">{data.title}</h2>
         <p className="text-lg text-dirty-red mb-5">{data.description}</p>
@@ -144,7 +158,7 @@ const Task = () => {
           </div>
         </div>
         {clue? <p className="text-lg text-dirty-red">{clue}</p> : null}
-        {expectedResult? <pre className="text-lg text-dirty-red">{expectedResult}</pre> : null}
+        {expectedResult}
         {showDB==='show'? <img src={databaseSchema} alt="схема базы данных" className="w-full max-w-4xl mx-auto my-4 rounded"/> : null}
         <div className="pt-5">
           <div className="flex flex-row justify-between py-3">
