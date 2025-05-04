@@ -7,6 +7,50 @@ import { duotoneLight } from "@uiw/codemirror-theme-duotone";
 import api from "./utils/api";
 import databaseSchema from "../assets/image.png";
 
+const makeTable = (recieved) => {
+  if (!recieved || !recieved.data || !recieved.columns) return null;
+  return (
+    <div className="overflow-x-auto overflow-y-auto max-h-96">
+      <table className="w-full mt-5">
+        <thead>
+          <tr className="border-b border-dirty-red">
+            {recieved.columns.map((column, index) => (
+              <th 
+                key={index}
+                className="px-4 py-3 text-left text-dirty-red font-bold text-base"
+              >
+                {column}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {recieved.data.map((row, rowIndex) => (
+            <tr 
+              key={rowIndex}
+              className={`hover:bg-dirty-red/20 transition-colors duration-200 ${
+                rowIndex % 2 === 0 ? 'bg-dirty-red/5' : ''
+              }`}
+            >
+              {row.map((data, dataIndex) => (
+                <td 
+                  key={dataIndex}
+                  className="px-4 py-3 text-dirty-red text-base"
+                >
+                  {data}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="mt-3 text-dirty-red">
+        Всего строк: {recieved.row_count}
+      </p>
+    </div>
+  );
+}
+
 const Task = () => {
   const { missionID, taskID } = useParams();
   const [data, setData] = useState({
@@ -15,9 +59,11 @@ const Task = () => {
   });
   const [stateRun, setStateRun] = useState('filling'); // 'executed', 'sending'
   const [stateSubmit, setStateSubmit] = useState('filling'); // 'sending', 'success', 'failed'
+  const [toast, setToast] = useState(null);
   const [showDB, setShowDB] = useState('hide'); // 'show'
   const [value, setValue] = useState('');
-  const [result, setResult] = useState('Выполните запрос, чтобы увидеть результат');
+  const [query, setQuery] = useState('');
+  const [result, setResult] = useState(null); // 'Выполните запрос, чтобы увидеть результат'
   const [errors, setErrors] = useState('');
   const [clue, setClue] = useState('');
   const [expectedResult, setExpectedResult] = useState(null);
@@ -56,6 +102,7 @@ const Task = () => {
 
     if (!newErrors) {
       setStateRun('sending');
+      setQuery(currentValue);
       const response = await api.post(`missions/${missionID}/tasks/${taskID}/run`, { sql_query: currentValue });
       setResult(response.data);
       setStateRun('executed');
@@ -67,13 +114,36 @@ const Task = () => {
 
     setStateSubmit('sending');
     try {
-      const response = await api.post(`missions/${missionID}/tasks/${taskID}/run`, { sql_query: currentValue });
-      console.log(response.data);
-      setStateSubmit('success');
+      const response = await api.post(`missions/${missionID}/tasks/${taskID}/submit`, { sql_query: query });
+      const recieved = response.data;
+      console.log(recieved);
+
+      setStateSubmit(is_correct? 'success' : 'failed');
     } catch {
       setStateSubmit('failed');
     }
   }
+
+  useEffect(() => {
+    if (stateSubmit === 'success') {
+      setToast(
+        <div id="toast-top-right" class="z-50 shadow-lg transition-all duration-300 fixed flex flex-col items-start w-full max-w-xs p-4 text-dirty-red bg-white rounded-lg top-12 right-5" role="alert">
+          <div className='text-sm font-bold'>Задача успешно выполнена! </div>
+          <div>+ 500 баллов</div>
+        </div>
+      );
+    }
+
+    if (stateSubmit === 'failed') {
+      setToast(
+        <div id="toast-top-right" class="z-50 shadow-lg transition-all duration-300 fixed flex flex-col items-start w-full max-w-xs p-4 text-dirty-red bg-white rounded-lg top-32 right-5" role="alert">
+          <div className='text-sm font-bold'>Задача не решена</div>
+        </div>
+      );
+    }
+
+    setTimeout(() => setToast(null), 3000);
+  }, [stateSubmit]);
 
   const handleClue = async(e) => {
     e.preventDefault();
@@ -85,21 +155,9 @@ const Task = () => {
     e.preventDefault();
 
     const response = await api.get(`missions/${missionID}/tasks/${taskID}/expected_result`); // потом добавится работа с баллами
-    const recieved = response.data.expected_result.data;
-    const newExpectedResult = (
-      <div>
-        <div className="flex gap-2">
-          {recieved.columns.map(column => <p>{column}</p>)}
-        </div>
-        {recieved.data.map(row =>
-          <div className="flex gap-2">
-            {row.map(data => <p>{data}</p>)}
-          </div>
-        )}        
-        <p>row_count: {recieved.row_count}</p>
-      </div>
-    );
-    setExpectedResult(newExpectedResult);
+    const recieved = response.data.expected_result;
+    
+    setExpectedResult(recieved);
   }
 
   return (
@@ -158,23 +216,24 @@ const Task = () => {
           </div>
         </div>
         {clue? <p className="text-lg text-dirty-red">{clue}</p> : null}
-        {expectedResult}
+        {makeTable(expectedResult)}
         {showDB==='show'? <img src={databaseSchema} alt="схема базы данных" className="w-full max-w-4xl mx-auto my-4 rounded"/> : null}
         <div className="pt-5">
           <div className="flex flex-row justify-between py-3">
             <p className="text-xl text-dirty-red font-imperial">Результат</p>
             <button
-              className={cn({"bg-wow-red": stateSubmit==='execute', "hover:bg-dirty-red": stateSubmit==='execute', "bg-wow-gray": stateSubmit!=='execute'}, "text-white", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
+              className={cn({"bg-wow-red": stateRun=='executed', "hover:bg-dirty-red": stateRun=='executed', "bg-wow-gray": stateRun!=='executed'}, "text-white", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
               type="submit"
-              disabled={stateSubmit!=='execute'}
+              disabled={stateRun!=='executed'}
               onClick={handleSubmit}
             >
               Отправить
             </button>
           </div>
-          <pre className="bg-wow-black text-wow-white p-4 rounded font-mono whitespace-pre-wrap">
-            {errors || result}
-          </pre>
+          {/* <pre className="bg-wow-black text-wow-white p-4 rounded font-mono whitespace-pre-wrap">
+            {errors}
+          </pre> */}
+          {makeTable(result)}
         </div>
         <div className="flex justify-center mt-10">
           <Link to="/tasks" className={cn("border", "border-wow-gray", "hover:bg-wow-gray", "hover:border-wow-gray", "hover:text-white", "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}>
@@ -182,7 +241,8 @@ const Task = () => {
           </Link>
         </div>
       </div>
-      
+      {toast}
+
     </div>
   );
 };
