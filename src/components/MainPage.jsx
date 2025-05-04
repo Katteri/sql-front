@@ -45,19 +45,17 @@ WHERE г.награда = 'Орден Победы'
       </section>
       <section className='mt-28 pb-10'>
         <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
-        <h2 className="text-8xl text-wow-red font-buran self-center mt-5 mb-4">Рейтинг</h2>
-        <p className="text-2xl font-imperial text-dirty-red self-center mb-12">Топ-10 лучших игроков</p>
- 
-        <div className="flex flex-col gap-2">
-          {rating.length > 0 ? rating.map(person => {
-            <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-              <p className="text-2xl text-dirty-red w-20">{person.place}</p>
-              <p className="text-xl text-dirty-red">{person.login}</p>
-              <p className="text-2xl text-dirty-red ml-auto px-4">{person.total_score}</p>
-            </div>
-          }) : <p className="text-lg text-dirty-red">Пока игроков нет</p>}
-        </div>
-
+          <h2 className="text-8xl text-wow-red font-buran self-center mt-5 mb-4">Рейтинг</h2>
+          <p className="text-2xl font-imperial text-dirty-red self-center mb-12">Топ-10 лучших игроков</p>
+          <div className="flex flex-col gap-2">
+            {rating.length > 0 ? rating.map(person =>
+              <div key={person.place} className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
+                <p className="text-2xl text-dirty-red w-20">{person.place}</p>
+                <p className="text-xl text-dirty-red">{person.login}</p>
+                <p className="text-2xl text-dirty-red ml-auto px-4">{person.total_score}</p>
+              </div>
+            ) : <p className="text-lg text-dirty-red">Пока игроков нет</p>}
+          </div>
         </div>
       </section>
     </>

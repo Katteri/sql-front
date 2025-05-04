@@ -11,7 +11,7 @@ const makeTable = (recieved) => {
   if (!recieved || !recieved.data || !recieved.columns) return null;
   return (
     <div className="overflow-x-auto overflow-y-auto max-h-96">
-      <table className="w-full mt-5">
+      <table className="w-full">
         <thead>
           <tr className="border-b border-dirty-red">
             {recieved.columns.map((column, index) => (
@@ -63,8 +63,8 @@ const Task = () => {
   const [showDB, setShowDB] = useState('hide'); // 'show'
   const [value, setValue] = useState('');
   const [query, setQuery] = useState('');
-  const [result, setResult] = useState(null); // 'Выполните запрос, чтобы увидеть результат'
-  const [errors, setErrors] = useState('');
+  const [result, setResult] = useState(null); // 
+  const [error, setError] = useState('Выполните запрос, чтобы увидеть результат');
   const [clue, setClue] = useState('');
   const [expectedResult, setExpectedResult] = useState(null);
 
@@ -75,6 +75,7 @@ const Task = () => {
         const newData = {
           title: response.data.title,
           description: response.data.description,
+          solved: response.data.isSolved,
         };
         setData(newData);
       } catch (error) {
@@ -94,18 +95,22 @@ const Task = () => {
 
     const currentValue = value.replace(/--.*$/gmi, "").replace(/\n/gmi, " "); // убираем комметраии и переносы строки
 
-    let newErrors = '';
+    let newError = '';
     if (!currentValue.toLowerCase().includes('select')) {
-      newErrors = 'Введите корректный SQL запрос';
+      newError = 'Введите корректный SQL запрос';
     }
-    setErrors(newErrors);
+    setError(newError);
 
-    if (!newErrors) {
+    if (!newError) {
       setStateRun('sending');
-      setQuery(currentValue);
-      const response = await api.post(`missions/${missionID}/tasks/${taskID}/run`, { sql_query: currentValue });
-      setResult(response.data);
-      setStateRun('executed');
+      try {
+        setQuery(currentValue);
+        const response = await api.post(`missions/${missionID}/tasks/${taskID}/run`, { sql_query: currentValue });
+        setResult(response.data);
+        setStateRun('executed');
+      } catch (error) {
+        setError(error.response.data.detail);
+      }      
     }
   }
 
@@ -116,31 +121,30 @@ const Task = () => {
     try {
       const response = await api.post(`missions/${missionID}/tasks/${taskID}/submit`, { sql_query: query });
       const recieved = response.data;
-      console.log(recieved);
 
-      setStateSubmit(is_correct? 'success' : 'failed');
-    } catch {
+      setStateSubmit(recieved.is_correct? 'success' : 'failed');
+    } catch (error) {
       setStateSubmit('failed');
+      setError(error.response.data.detail);
     }
   }
 
   useEffect(() => {
+    let caption, score;
     if (stateSubmit === 'success') {
-      setToast(
-        <div id="toast-top-right" class="z-50 shadow-lg transition-all duration-300 fixed flex flex-col items-start w-full max-w-xs p-4 text-dirty-red bg-white rounded-lg top-12 right-5" role="alert">
-          <div className='text-sm font-bold'>Задача успешно выполнена! </div>
-          <div>+ 500 баллов</div>
-        </div>
-      );
-    }
+      caption = 'Задача успешно выполнена!';
+      score = '+ 500 баллов';
+    } else if (stateSubmit === 'failed') {
+      caption = 'Задача не решена';
+      score = null;
+    };
 
-    if (stateSubmit === 'failed') {
-      setToast(
-        <div id="toast-top-right" class="z-50 shadow-lg transition-all duration-300 fixed flex flex-col items-start w-full max-w-xs p-4 text-dirty-red bg-white rounded-lg top-32 right-5" role="alert">
-          <div className='text-sm font-bold'>Задача не решена</div>
-        </div>
-      );
-    }
+    setToast(
+      <div id="toast-top-right" className="z-50 shadow-lg transition-all duration-300 fixed flex flex-col items-start w-full max-w-xs p-4 text-sm text-dirty-red bg-white rounded-lg top-12 right-5" role="alert">
+        <div className='font-bold'>{caption}</div>
+        {score && <div>{score}</div>}
+      </div>
+    );
 
     setTimeout(() => setToast(null), 3000);
   }, [stateSubmit]);
@@ -156,7 +160,7 @@ const Task = () => {
 
     const response = await api.get(`missions/${missionID}/tasks/${taskID}/expected_result`); // потом добавится работа с баллами
     const recieved = response.data.expected_result;
-    
+
     setExpectedResult(recieved);
   }
 
@@ -167,7 +171,8 @@ const Task = () => {
           <h3 className="text-xl text-dirty-red font-imperial">Миссия {missionID}.{taskID}</h3>
           <p className="text-xl font-imperial text-dirty-red">баллы: 500</p> {/*TODO: убрать заглушку*/}
         </div>
-        <h2 className="text-5xl text-dirty-red font-buran self-center mb-10">{data.title}</h2>
+        <h2 className="text-5xl text-dirty-red font-buran self-center mb-10">{data.title}{data.isSolved && '*'}</h2>
+        {data.isSolved && <p className="text-lg text-dirty-red mb-5">* задача уже решена</p>}
         <p className="text-lg text-dirty-red mb-5">{data.description}</p>
         <CodeMirror
           className="w-full self-center text-base"
@@ -215,7 +220,7 @@ const Task = () => {
             </button>
           </div>
         </div>
-        {clue? <p className="text-lg text-dirty-red">{clue}</p> : null}
+        {clue? <p className="text-lg text-dirty-red mb-5">{clue}</p> : null}
         {makeTable(expectedResult)}
         {showDB==='show'? <img src={databaseSchema} alt="схема базы данных" className="w-full max-w-4xl mx-auto my-4 rounded"/> : null}
         <div className="pt-5">
@@ -230,10 +235,7 @@ const Task = () => {
               Отправить
             </button>
           </div>
-          {/* <pre className="bg-wow-black text-wow-white p-4 rounded font-mono whitespace-pre-wrap">
-            {errors}
-          </pre> */}
-          {makeTable(result)}
+          {makeTable(result) || <p className="text-lg text-dirty-red">{error}</p> /*TODO: проверить на корректность логики*/}
         </div>
         <div className="flex justify-center mt-10">
           <Link to="/tasks" className={cn("border", "border-wow-gray", "hover:bg-wow-gray", "hover:border-wow-gray", "hover:text-white", "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}>
