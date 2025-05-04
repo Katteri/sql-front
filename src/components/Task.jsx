@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import CodeMirror from "@uiw/react-codemirror";
 import { sql, PostgreSQL } from "@codemirror/lang-sql";
 import { duotoneLight } from "@uiw/codemirror-theme-duotone";
+import { useAuth } from "./context/AuthContext";
 import api from "./utils/api";
 import databaseSchema from "../assets/image.png";
 
@@ -52,6 +53,7 @@ const makeTable = (recieved) => {
 }
 
 const Task = () => {
+  const { accessToken } = useAuth();
   const { missionID, taskID } = useParams();
   const [data, setData] = useState({
     title: '',
@@ -69,9 +71,10 @@ const Task = () => {
   const [expectedResult, setExpectedResult] = useState(null);
 
   useEffect(() => {
+    const AuthStr = `Bearer ${accessToken}`;
     const getData = async () => {
       try {
-        const response = await api.get(`/missions/${missionID}/tasks/${taskID}`);
+        const response = await api.get(`/missions/${missionID}/tasks/${taskID}`, { 'headers': { 'Authorization': AuthStr } });
         const newData = {
           title: response.data.title,
           description: response.data.description,

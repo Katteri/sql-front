@@ -1,15 +1,18 @@
 import React, { use, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from "./context/AuthContext";
 import api from "./utils/api";
 
 const Tasks = () => {
+  const { accessToken } = useAuth();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   
   useEffect(() => {
+    const AuthStr = `Bearer ${accessToken}`;
     const getData = async () => {
       try {
-        const response = await api.get('missions');
+        const response = await api.get('/missions', { 'headers': { 'Authorization': AuthStr } });
         setData(response.data.missions);
       } catch (error) {
         console.log(error.response.data.detail);
