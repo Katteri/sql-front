@@ -22,12 +22,12 @@ const App = () => {
         <Route path="/register" element={<Register/>} />
           <Route element={<Navigation/>} >
             <Route path="/" element={<MainPage/>} />
-            <Route path="/quest" element={<Quest />} />
             <Route element={<ProtectedRoutes/>} >
               <Route path="/achievements" element={<Achievements/>} />
               <Route path="/profile" element={<Profile/>} />
               <Route path="/missions" element={<Tasks/>} />
               <Route path="/missions/:missionID/task/:taskID" element={<Task />} />
+              <Route path="/quest" element={<Quest />} />
             </Route>
           </Route>
         </Routes>

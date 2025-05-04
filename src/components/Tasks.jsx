@@ -5,8 +5,7 @@ import api from "./utils/api";
 const Tasks = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
-  const achieved = false;
-
+  
   useEffect(() => {
     const getData = async () => {
       try {
@@ -41,7 +40,7 @@ const Tasks = () => {
               >
                 <p className="text-3xl text-dirty-red self-center w-20">{task.task_id}</p>
                 <p className="text-xl text-dirty-red self-center flex-1">{task.title}</p>
-                {achieved && <p className="text-3xl self-center text-dirty-red ml-auto px-4">✓</p>}
+                {task.is_solved && <p className="text-3xl self-center text-dirty-red ml-auto px-4">✓</p>}
               </div>
             ))}
           </div>
