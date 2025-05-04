@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CodeMirror from "@uiw/react-codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { duotoneLight } from "@uiw/codemirror-theme-duotone";
+import api from './utils/api';
 
 const MainPage = () => {
+  const [rating, setRating] = useState([]);
+
+  useEffect(() => {
+    const getRating = async () => {
+      const response = await api.get('/rating');
+      setRating(response.data.top_users);
+    };
+    getRating();
+  }, []);
+
   return (
     <>
       <section className='flex flex-1 flex-col justify-center content-center pl-10 pr-20 py-4'>
@@ -38,56 +49,13 @@ WHERE г.награда = 'Орден Победы'
         <p className="text-2xl font-imperial text-dirty-red self-center mb-12">Топ-10 лучших игроков</p>
  
         <div className="flex flex-col gap-2">
-          <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-            <p className="text-2xl text-dirty-red w-20">1</p>
-            <p className="text-xl text-dirty-red">tarrvars</p>
-            <p className="text-2xl text-dirty-red ml-auto px-4">222900</p>
-          </div>
-          <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-            <p className="text-2xl text-dirty-red w-20">2</p>
-            <p className="text-xl text-dirty-red">katt</p>
-            <p className="text-2xl text-dirty-red ml-auto px-4">900</p>
-          </div>
-          <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-            <p className="text-2xl text-dirty-red w-20">3</p>
-            <p className="text-xl text-dirty-red">userr3</p>
-            <p className="text-2xl text-dirty-red ml-auto px-4">500</p>
-          </div>
-          <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-            <p className="text-2xl text-dirty-red w-20">4</p>
-            <p className="text-xl text-dirty-red">my-namee</p>
-            <p className="text-2xl text-dirty-red ml-auto px-4">250</p>
-          </div>
-          <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-            <p className="text-2xl text-dirty-red w-20">5</p>
-            <p className="text-xl text-dirty-red">noname</p>
-            <p className="text-2xl text-dirty-red ml-auto px-4">100</p>
-          </div>
-          <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-            <p className="text-2xl text-dirty-red w-20">6</p>
-            <p className="text-xl text-dirty-red">tarrvars</p>
-            <p className="text-2xl text-dirty-red ml-auto px-4">50</p>
-          </div>
-          <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-            <p className="text-2xl text-dirty-red w-20">7</p>
-            <p className="text-xl text-dirty-red">katt</p>
-            <p className="text-2xl text-dirty-red ml-auto px-4">25</p>
-          </div>
-          <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-            <p className="text-2xl text-dirty-red w-20">8</p>
-            <p className="text-xl text-dirty-red">userr3</p>
-            <p className="text-2xl text-dirty-red ml-auto px-4">24</p>
-          </div>
-          <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-            <p className="text-2xl text-dirty-red w-20">9</p>
-            <p className="text-xl text-dirty-red">my-namee</p>
-            <p className="text-2xl text-dirty-red ml-auto px-4">20</p>
-          </div>
-          <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
-            <p className="text-2xl text-dirty-red w-20">10</p>
-            <p className="text-xl text-dirty-red">noname</p>
-            <p className="text-2xl text-dirty-red ml-auto px-4">10</p>
-          </div>
+          {rating.length > 0 ? rating.map(person => {
+            <div className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
+              <p className="text-2xl text-dirty-red w-20">{person.place}</p>
+              <p className="text-xl text-dirty-red">{person.login}</p>
+              <p className="text-2xl text-dirty-red ml-auto px-4">{person.total_score}</p>
+            </div>
+          }) : <p className="text-lg text-dirty-red">Пока игроков нет</p>}
         </div>
 
         </div>
