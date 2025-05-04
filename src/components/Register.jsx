@@ -77,7 +77,7 @@ const Register = () => {
 
   useEffect(() => {
     if (state === 'success') {
-      setTimeout(() => navigate('/login'), 1000);
+      navigate('/login');
     }
   }, [state]);
 

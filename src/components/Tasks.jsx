@@ -26,11 +26,11 @@ const Tasks = () => {
 
   return (
     <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
-      <h2 className="text-7xl text-wow-red font-buran self-center mt-5 mb-20">Задачи</h2>
+      <h2 className="text-7xl text-wow-red font-buran self-center mt-5 mb-16">Задачи</h2>
 
       {data ? Object.keys(data).map((missionId) => (
         <div key={missionId} className="flex flex-1 flex-col gap-8 mb-5">
-          <p className="text-xl font-imperial text-dirty-red">Миссия {missionId}</p>
+          <p className="text-xl font-imperial text-dirty-red mt-4">Миссия {missionId}</p>
 
           <div className="flex flex-col gap-5 mb-8">
             {data[missionId].map((task) => (

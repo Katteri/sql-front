@@ -66,7 +66,7 @@ const Login = () => {
 
   useEffect(() => {
     if (state === 'success') {
-      setTimeout(() => navigate('/profile'), 1000);
+      navigate('/profile');
     }
   }, [state]);
 

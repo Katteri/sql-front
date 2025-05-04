@@ -13,14 +13,14 @@ const Task = () => {
     title: '',
     description: '',
   });
-  const [stateRun, setStateRun] = useState('filling'); // 'sending', 'success', 'failed'
-  const [stateSubmit, setStateSubmit] = useState('filling'); // 'execute', 'sending'
+  const [stateRun, setStateRun] = useState('filling'); // 'executed', 'sending'
+  const [stateSubmit, setStateSubmit] = useState('filling'); // 'sending', 'success', 'failed'
   const [showDB, setShowDB] = useState('hide'); // 'show'
   const [value, setValue] = useState('');
   const [result, setResult] = useState('Выполните запрос, чтобы увидеть результат');
   const [errors, setErrors] = useState('');
-  const [clue1, setClue1] = useState('');
-  const [clue2, setClue2] = useState('');
+  const [clue, setClue] = useState('');
+  const [expectedResult, setExpectedResult] = useState('');
 
   useEffect(() => {
     const getData = async () => {
@@ -43,13 +43,9 @@ const Task = () => {
     setValue(val); // сохраняем значение
   }, []);
 
-  const handleRun = (e) => {
-    setResult(`user_id |  login   |            email            | total_score
----------+----------+-----------------------------+-------------
-       1 | tarvarrs | valeriya.taranova@gmail.com |           0
-       5 | katy     | katy.domashova@gmail.com    |           0
-(2 rows)`);
+  const handleRun = async (e) => {
     e.preventDefault();
+
     const currentValue = value.replace(/--.*$/gmi, "").replace(/\n/gmi, " "); // убираем комметраии и переносы строки
 
     let newErrors = '';
@@ -60,41 +56,45 @@ const Task = () => {
 
     if (!newErrors) {
       setStateRun('sending');
-      setStateSubmit('execute');
+      const response = api.post(`missions/${missionID}/tasks/${taskID}/run`, { sql_query: currentValue });
+      setResult(response.data);
+      setStateRun('executed');
     }
-      // TODO: add backend interact
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setStateSubmit('sending');
-    // submit result value to the server
+    try {
+      const response = api.post(`missions/${missionID}/tasks/${taskID}/run`, { sql_query: currentValue });
+      console.log(response.data);
+      setStateSubmit('success');
+    } catch {
+      setStateSubmit('failed');
+    }
   }
 
-  const handleClue1 = (e) => {
+  const handleClue = async(e) => {
     e.preventDefault();
-
-    //get the first clue
-    setClue1('Фильтрация по локации в таблице `battles` с использованием точного значения.');
+    const response = await api.get(`/missions/${missionID}/tasks/${taskID}/clue`); // потом добавится работа с баллами
+    setClue(response.data.clue);
   }
 
-  const handleClue2 = (e) => {
+  const handleExpectedResult = async(e) => {
     e.preventDefault();
 
-    //get the second clue
-    setClue2(`Должно получиться так:
-user_id |  login   |            email            | total_score
----------+----------+-----------------------------+-------------
-        1 | tarvarrs | valeriya.taranova@gmail.com |           0
-        5 | katy     | katy.domashova@gmail.com    |           0
-(2 rows)`);
+    const response = await api.get(`missions/${missionID}/tasks/${taskID}/expected_result`); // потом добавится работа с баллами
+    setExpectedResult(response.data.expected_result.data);
   }
 
   return (
     <div className="bg-sand w-full min-h-screen">
       <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
-      <h3 className="text-xl text-dirty-red font-imperial">Миссия {missionID}.{taskID}</h3>
+        <div className="flex justify-between">
+          <h3 className="text-xl text-dirty-red font-imperial">Миссия {missionID}.{taskID}</h3>
+          <p className="text-xl font-imperial text-dirty-red">баллы: 500</p> // TODO: заглушку убрать
+        </div>
         <h2 className="text-5xl text-dirty-red font-buran self-center mb-10">{data.title}</h2>
         <p className="text-lg text-dirty-red mb-5">{data.description}</p>
         <CodeMirror
@@ -128,23 +128,23 @@ user_id |  login   |            email            | total_score
           </div>
           <div>
             <button
-              className={cn("border", "border-wow-gray", {"hover:bg-wow-gray": !clue1, "hover:border-wow-gray": !clue1, "hover:text-white": !clue1}, "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline", "mr-4")}
-              disabled={clue1} //false когда хватает баллов
-              onClick={handleClue1}
+              className={cn("border", "border-wow-gray", {"hover:bg-wow-gray": !clue, "hover:border-wow-gray": !clue, "hover:text-white": !clue}, "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline", "mr-4")}
+              disabled={clue} //false когда хватает баллов
+              onClick={handleClue}
             >
               Подсказка
             </button>
             <button
-              className={cn("border", "border-wow-gray", {"hover:bg-wow-gray": clue1 && !clue2, "hover:border-wow-gray": clue1 && !clue2, "hover:text-white": clue1 && !clue2}, "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
-              disabled={!clue1 || clue1 && clue2} //false когда взята подсказка1 и хватает баллов
-              onClick={handleClue2}
+              className={cn("border", "border-wow-gray", {"hover:bg-wow-gray": clue && !expectedResult, "hover:border-wow-gray": clue && !expectedResult, "hover:text-white": clue && !expectedResult}, "text-wow-gray", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
+              disabled={!clue || clue && expectedResult} //false когда взята подсказка1 и хватает баллов
+              onClick={handleExpectedResult}
             >
               Ожидаемый результат
             </button>
           </div>
         </div>
-        {clue1? <p className="text-lg text-dirty-red">{clue1}</p> : null}
-        {clue2? <pre className="text-lg text-dirty-red">{clue2}</pre> : null}
+        {clue? <p className="text-lg text-dirty-red">{clue}</p> : null}
+        {expectedResult? <pre className="text-lg text-dirty-red">{expectedResult}</pre> : null}
         {showDB==='show'? <img src={databaseSchema} alt="схема базы данных" className="w-full max-w-4xl mx-auto my-4 rounded"/> : null}
         <div className="pt-5">
           <div className="flex flex-row justify-between py-3">
