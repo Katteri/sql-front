@@ -46,7 +46,7 @@ const Tasks = () => {
             ))}
           </div>
         </div>
-      )) : null}
+      )) : <p className="text-lg text-dirty-red">Нет доступных задач</p>}
 
     </div>
   );

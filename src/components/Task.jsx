@@ -50,7 +50,7 @@ const Task = () => {
        5 | katy     | katy.domashova@gmail.com    |           0
 (2 rows)`);
     e.preventDefault();
-    const currentValue = value.replace(/--.*$/gmi, "");
+    const currentValue = value.replace(/--.*$/gmi, "").replace(/\n/gmi, " "); // убираем комметраии и переносы строки
 
     let newErrors = '';
     if (!currentValue.toLowerCase().includes('select')) {
