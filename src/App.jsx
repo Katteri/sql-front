@@ -9,6 +9,7 @@ import Achievements from './components/Achievements';
 import Profile from './components/Profile';
 import Tasks from './components/Tasks';
 import Task from './components/Task';
+import Quest from './components/Quest';
 
 import Navigation from './components/Navigation';
 
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/register" element={<Register/>} />
           <Route element={<Navigation/>} >
             <Route path="/" element={<MainPage/>} />
+            <Route path="/quest" element={<Quest />} />
             <Route element={<ProtectedRoutes/>} >
               <Route path="/achievements" element={<Achievements/>} />
               <Route path="/profile" element={<Profile/>} />
