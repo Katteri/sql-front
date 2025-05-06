@@ -28,10 +28,10 @@ const Profile = () => {
 
     const getData = async() => {
       try {
-        const responseProfile = await api.get('/profile/me', { 'headers': { 'Authorization': AuthStr } });
-        const responseProgress = await api.get('/profile/tasks_progress', { 'headers': { 'Authorization': AuthStr } });
-        const responseTasks = await api.get('/missions/get_info');
-        const responseAchievements = await api.get('/profile/achievements', { 'headers': { 'Authorization': AuthStr } });
+        const responseProfile = await api.get('/profile/me/', { 'headers': { 'Authorization': AuthStr } });
+        const responseProgress = await api.get('/profile/tasks_progress/', { 'headers': { 'Authorization': AuthStr } });
+        const responseTasks = await api.get('/missions/get_info/');
+        const responseAchievements = await api.get('/profile/achievements/', { 'headers': { 'Authorization': AuthStr } });
         
 
         const newData = {
@@ -62,39 +62,39 @@ const Profile = () => {
 
   return (
     <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
-      <h2 className="text-9xl text-wow-red font-buran self-end mt-5 mb-10">{data.username}</h2>
-      <p className="text-xl font-imperial text-dirty-red mb-20">Баллы: {data.score}</p>
+      <h2 className="text-9xl text-wow-red font-buran self-end mt-10 mb-10">{data.username}</h2>
+      <p className="text-xl font-gerhaus font-bold tracking-widest text-dirty-red mb-20">Баллы: {data.score}</p>
       
       <section id="task-progress" className="mb-24">
-        <p className="text-2xl text-center text-dirty-red font-imperial mb-10">Прогресс по задачам</p>
+        <p className="text-2xl text-center text-dirty-red font-gerhaus font-bold tracking-widest mb-10">Прогресс по задачам</p>
         <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-x-3 whitespace-nowrap">
+          <div className="flex items-center gap-x-3 whitespace-nowrap text-dirty-red font-moscow text-xl">
             <div className="w-48 text-start">
-              <p className="text-lg text-dirty-red">Легкие</p>
+              <p>Легкие</p>
             </div>
             <ProgressBar currentValue={data.tasks.easySolved} maxValue={data.tasks.easy}/>
             <div className="w-40 text-end">
-              <span className="text-lg text-dirty-red">{data.tasks.easySolved}/{data.tasks.easy}</span>
+              <span>{data.tasks.easySolved}/{data.tasks.easy}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-x-3 whitespace-nowrap">
+          <div className="flex items-center gap-x-3 whitespace-nowrap text-dirty-red font-moscow text-xl">
             <div className="w-48 text-start">
-              <p className="text-lg text-dirty-red">Средние</p>
+              <p>Средние</p>
             </div>
             <ProgressBar currentValue={data.tasks.mediumSolved} maxValue={data.tasks.medium}/>
             <div className="w-40 text-end">
-              <span className="text-lg text-dirty-red">{data.tasks.mediumSolved}/{data.tasks.medium}</span>
+              <span>{data.tasks.mediumSolved}/{data.tasks.medium}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-x-3 whitespace-nowrap">
+          <div className="flex items-center gap-x-3 whitespace-nowrap text-dirty-red font-moscow text-xl">
             <div className="w-48 text-start">
-              <p className="text-lg text-dirty-red">Сложные</p>
+              <p>Сложные</p>
             </div>
             <ProgressBar currentValue={data.tasks.hardSolved} maxValue={data.tasks.hard}/>
             <div className="w-40 text-end">
-              <span className="text-lg text-dirty-red">{data.tasks.hardSolved}/{data.tasks.hard}</span>
+              <span>{data.tasks.hardSolved}/{data.tasks.hard}</span>
             </div>
           </div>
           
@@ -102,13 +102,13 @@ const Profile = () => {
         
       </section>
       <section id="achievement" className="mb-10">
-        <p className="text-2xl text-center text-dirty-red font-imperial mb-10">Мои достижения</p>
-        <div className="flex flex-col gap-6">
-          {Object.entries(data.achievements).length === 0 && <p className="text-lg text-dirty-red">Решайте задачи, чтобы получать достижения</p>}
+        <p className="text-2xl text-center text-dirty-red font-gerhaus font-bold tracking-widest mb-10">Мои достижения</p>
+        <div className="flex flex-col gap-14  text-dirty-red">
+          {Object.entries(data.achievements).length === 0 && <p className="text-xl font-gerhaus font-bold tracking-widest text-dirty-red">Решайте задачи, чтобы получать достижения</p>}
           {Object.entries(data.achievements).map(([category, achievements]) => (
             <div key={category}>
-              <p className="text-xl font-imperial text-dirty-red mb-4">{category}</p>
-              <div className="flex flex-col gap-5">
+              <p className="text-xl font-gerhaus tracking-widest font-bold mb-3">{category}</p>
+              <div className="flex flex-col gap-5 mb-8">
                 {achievements.map((achievement, idx) => (
                   <Achievement
                     key={`${achievement.name}-${idx}`}
@@ -124,7 +124,7 @@ const Profile = () => {
 
         </div>
         <div className="flex justify-center mt-14">
-          <Link to="/achievements" className="border border-wow-gray hover:bg-wow-gray hover:border-wow-gray hover:text-white text-wow-gray py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          <Link to="/achievements" className="border border-wow-gray hover:bg-wow-gray hover:border-wow-gray hover:text-white text-wow-gray font-moscow py-2 px-4 rounded transition duration-150 ease-in-out">
             Ко всем достижениям
           </Link>
         </div>

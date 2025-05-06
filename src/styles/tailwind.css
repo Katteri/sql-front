@@ -5,11 +5,23 @@
 @font-face {
   font-family: 'Buran USSR';
   src: url('../assets/fonts/BuranUSSR.ttf') format('truetype');
-  font-display: swap;
+  font-display: fallback;
 }
 
 @font-face {
-  font-family: 'Imperial Web';
-  src: url('../assets/fonts/ImperialWeb.ttf') format('truetype');
-  font-display: swap;
+  font-family: 'Gerhaus';
+  src: url('../assets/fonts/Gerhaus.ttf') format('truetype');
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Moscow Sans';
+  src: url('../assets/fonts/moscowsansregular.ttf') format('truetype');
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "Noto Color Emoji";
+  src: url('../assets/fonts/NotoColorEmoji-Regular.ttf') format('truetype');
+  font-display: block;
 }

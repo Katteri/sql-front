@@ -5,7 +5,11 @@ export default {
     extend: {
       fontFamily: {
         buran: ['Buran USSR', 'sans-serif'],
-        imperial: ['Imperial Web', 'sans-serif'],
+        gerhaus: ['Gerhaus', 'sans-serif'],
+        moscow: ['Moscow Sans', 'sans-serif'],
+        emoji: [
+          'Noto Color Emoji',
+        ],
       },
       colors: {
         'dirty-red': '#691F0C',

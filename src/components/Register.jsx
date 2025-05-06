@@ -66,7 +66,7 @@ const Register = () => {
       setState('sending');
 
       try {
-        await api.post('auth/register', { login: username, email, password });
+        await api.post('/auth/register/', { login: username, email, password });
         setState('success');
       } catch(error) {
         setState('failed');
@@ -86,18 +86,18 @@ const Register = () => {
       <p className='text-8xl text-wow-red font-buran'>SQL Фронт</p>
       <div className="w-full max-w-xs self-center">
         <form
-          className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
+          className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 text-dirty-red font-moscow"
           onSubmit={handleSubmit}
         >
           <div className="mb-4">
             <label
-              className="block text-wow-black text-sm font-bold mb-2"
+              className="block mb-2"
               htmlFor="email"
             >
               E-mail
             </label>
             <input
-              className={cn('shadow', 'appearance-none', 'border', 'rounded', 'w-full', 'py-2', 'px-3', 'text-gray-700', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline',
+              className={cn('shadow', 'appearance-none', 'border', 'rounded', 'w-full', 'py-2', 'px-3', 'text-wow-black', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline',
                 {'border-wow-red': errors.username.length > 0})}
               id="email"
               type="text"
@@ -111,13 +111,13 @@ const Register = () => {
           </div>
           <div className="mb-4">
             <label
-              className="block text-wow-black text-sm font-bold mb-2"
+              className="block mb-2"
               htmlFor="username"
             >
               Логин
             </label>
             <input
-              className={cn('shadow', 'appearance-none', 'border', 'rounded', 'w-full', 'py-2', 'px-3', 'text-gray-700', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline',
+              className={cn('shadow', 'appearance-none', 'border', 'rounded', 'w-full', 'py-2', 'px-3', 'text-wow-black', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline',
                 {'border-wow-red': errors.username.length > 0})}
               id="username"
               type="text"
@@ -131,13 +131,13 @@ const Register = () => {
           </div>
           <div className="mb-6">
             <label
-              className="block text-wow-black text-sm font-bold mb-2"
+              className="block mb-2"
               htmlFor="password"
             >
               Пароль
             </label>
             <input
-              className={cn('shadow', 'appearance-none', 'border', 'rounded', 'w-full', 'py-2', 'px-3', 'text-gray-700', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline',
+              className={cn('shadow', 'appearance-none', 'border', 'rounded', 'w-full', 'py-2', 'px-3', 'text-wow-black', 'leading-tight', 'font-gerhaus', 'focus:outline-none', 'focus:shadow-outline',
                 {'border-wow-red': errors.password.length > 0})}
               id="password"
               type="password"
@@ -153,14 +153,14 @@ const Register = () => {
           {serverError && <p className="text-wow-red text-xs italic mb-5">{serverError}</p>}
           <div className="flex flex-col items-center justify-center">
             <button
-              className={cn({"bg-wow-red": state!=='sending', "hover:bg-dirty-red": state!=='sending', "bg-wow-gray": state==='sending'}, "text-white", "font-bold", "w-full","py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
+              className={cn({"bg-wow-red": state!=='sending', "hover:bg-dirty-red": state!=='sending', "bg-wow-gray": state==='sending'}, "text-white", "text-lg", "font-moscow", "w-full", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
               type="submit"
               disabled={state==='sending'}
             >
               Зарегистрироваться
             </button>
-            <p className="mt-3 text-sm">Уже есть аккаунт?</p>
-            <Link to="/login" className="inline-flex items-center hover:underline text-sm">Войдите</Link> 
+            <p className="mt-3">Уже есть аккаунт?</p>
+            <Link to="/login" className="inline-flex items-center hover:underline">Войдите</Link> 
           </div>          
         </form>
       </div>
