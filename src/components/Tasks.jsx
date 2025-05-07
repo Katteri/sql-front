@@ -29,7 +29,6 @@ const Tasks = () => {
   return (
     <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
       <h2 className="text-8xl text-wow-red font-buran self-center mt-10 mb-14">Задачи</h2>
-
       {data ? Object.keys(data).map((missionId) => (
         <div key={missionId} className="flex flex-1 flex-col gap-8 mb-5">
           <div className="flex flex-col mb-8">

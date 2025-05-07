@@ -70,7 +70,7 @@ const Profile = () => {
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-x-3 whitespace-nowrap text-dirty-red font-moscow text-xl">
             <div className="w-48 text-start">
-              <p>Легкие</p>
+              <p>Миссия 0</p>
             </div>
             <ProgressBar currentValue={data.tasks.easySolved} maxValue={data.tasks.easy}/>
             <div className="w-40 text-end">
@@ -80,7 +80,7 @@ const Profile = () => {
 
           <div className="flex items-center gap-x-3 whitespace-nowrap text-dirty-red font-moscow text-xl">
             <div className="w-48 text-start">
-              <p>Средние</p>
+              <p>Миссия 1</p>
             </div>
             <ProgressBar currentValue={data.tasks.mediumSolved} maxValue={data.tasks.medium}/>
             <div className="w-40 text-end">
@@ -90,7 +90,7 @@ const Profile = () => {
 
           <div className="flex items-center gap-x-3 whitespace-nowrap text-dirty-red font-moscow text-xl">
             <div className="w-48 text-start">
-              <p>Сложные</p>
+              <p>Миссия 2</p>
             </div>
             <ProgressBar currentValue={data.tasks.hardSolved} maxValue={data.tasks.hard}/>
             <div className="w-40 text-end">

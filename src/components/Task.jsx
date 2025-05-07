@@ -4,21 +4,23 @@ import { Link, useParams } from "react-router-dom";
 import CodeMirror from "@uiw/react-codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { duotoneLight } from "@uiw/codemirror-theme-duotone";
+import { Toaster, toast } from "react-hot-toast";
 import { useAuth } from "./context/AuthContext";
 import Table from "./Table";
+import AchievementToast from "./AchievementToast";
 import api from "./utils/api";
 import databaseSchema from "../assets/image.png";
 
 const Task = () => {
   const { accessToken } = useAuth();
   const { missionID, taskID } = useParams();
+  const [score, setScore] = useState(0);
   const [data, setData] = useState({
     title: '',
     description: '',
   });
   const [stateRun, setStateRun] = useState('filling'); // 'executed', 'sending'
-  const [stateSubmit, setStateSubmit] = useState('filling'); // 'sending', 'success', 'failed'
-  const [toast, setToast] = useState(null);
+  const [stateSubmit, setStateSubmit] = useState('filling'); // 'sending'
   const [showDB, setShowDB] = useState('hide'); // 'show'
   const [value, setValue] = useState('');
   const [query, setQuery] = useState('');
@@ -31,13 +33,15 @@ const Task = () => {
     const AuthStr = `Bearer ${accessToken}`;
     const getData = async () => {
       try {
+        const responsePerson = await api.get(`/profile/me/`, { 'headers': { 'Authorization': AuthStr } });
+        const newScore = responsePerson.data.total_score;
+        setScore(newScore);
         const response = await api.get(`/missions/${missionID}/tasks/${taskID}/`, { 'headers': { 'Authorization': AuthStr } });
         const newData = {
           title: response.data.title,
           description: response.data.description,
           isSolved: response.data.is_solved,
         };
-        console.log(response.data);
         setData(newData);
       } catch (error) {
         console.log(error.response.data.detail);
@@ -70,7 +74,6 @@ const Task = () => {
         setResult(response.data);
         
       } catch (error) {
-        console.log(error.response.data);
         setError(error.response.data.detail);
         setResult(null);
       }
@@ -83,45 +86,44 @@ const Task = () => {
 
     setStateSubmit('sending');
     try {
-      const response = await api.post(`/missions/${missionID}/tasks/${taskID}/submit/`, { sql_query: query });
+      const AuthStr = `Bearer ${accessToken}`;
+      const response = await api.post(`/missions/${missionID}/tasks/${taskID}/submit/`, { sql_query: query }, { 'headers': { 'Authorization': AuthStr } });
       const recieved = response.data;
       console.log(recieved);
-      setStateSubmit(recieved.is_correct? 'success' : 'failed');
+      setScore(recieved.current_points);
+      if (recieved.is_correct) {
+        setData({...data, isSolved: true});
+        toast.success(
+          <div className="text-moscow text-wow-black">
+            <p>Задача решена</p>
+            <p>+ {recieved.points_earned} баллов</p>
+          </div>
+        );
+        recieved.awarded_achievements.forEach((achievement) => {
+          toast.custom(
+            <AchievementToast 
+              name={achievement.name}
+              description={achievement.description}
+              icon={achievement.icon}
+            />,
+            {
+              duration: 5000,
+            }
+          );
+        });
+      } else {
+        toast.error(
+          <div className="text-moscow text-wow-black">
+            <p>Задача не решена</p>
+            <p>- {recieved.points_penalty} баллов</p>
+          </div>
+        );
+      }
     } catch (error) {
-      setStateSubmit('failed');
       setError(error.response.data.detail);
     }
+    setStateSubmit('filling');
   }
-
-  useEffect(() => {
-    let caption, score;
-    
-    if (stateSubmit === 'success') {
-      caption = 'Задача успешно выполнена!';
-      score = '+ 500 баллов';
-      setToast(
-        <div id="toast-top-right" className="z-50 shadow-lg transition-all duration-300 fixed flex flex-col items-start w-full max-w-xs p-4 text-sm text-dirty-red bg-white rounded-lg top-12 right-5" role="alert">
-          <div className='font-bold'>{caption}</div>
-          {score && <div>{score}</div>}
-        </div>
-      );
-  
-      setTimeout(() => setToast(null), 3000);
-    } else if (stateSubmit === 'failed') {
-      caption = 'Задача не решена';
-      score = null;
-      setToast(
-        <div id="toast-top-right" className="z-50 shadow-lg transition-all duration-300 fixed flex flex-col items-start w-full max-w-xs p-4 text-sm text-dirty-red bg-white rounded-lg top-12 right-5" role="alert">
-          <div className='font-bold'>{caption}</div>
-          {score && <div>{score}</div>}
-        </div>
-      );
-  
-      setTimeout(() => setToast(null), 3000);
-    };
-
-    
-  }, [stateSubmit]);
 
   const handleClue = async(e) => {
     e.preventDefault();
@@ -143,12 +145,11 @@ const Task = () => {
       <div className="w-3/4 mx-auto pt-5 pb-16 px-10 flex flex-col content-center">
         <div className="flex justify-between">
           <h3 className="text-xl text-dirty-red font-gerhaus font-bold tracking-widest">Миссия {missionID}.{taskID}</h3>
-          <p className="text-xl text-dirty-red font-gerhaus font-bold tracking-widest">баллы: 500</p> {/*TODO: убрать заглушку*/}
+          <p className="text-xl text-dirty-red font-gerhaus font-bold tracking-widest">Мои баллы: {score}</p>
         </div>
         <h2 className="text-6xl mt-3 text-dirty-red font-buran self-center">{data.title}</h2>
         {data.isSolved && <div className="self-center text-center">
           <p className="text-xl text-wow-red font-gerhaus font-bold tracking-widest mt-3">задача уже решена *</p>
-          
         </div>}
         
         <p className="text-lg text-dirty-red font-moscow mt-10 mb-5">{data.description}</p>
@@ -161,8 +162,8 @@ const Task = () => {
             highlightActiveLine: true,
             highlightSelectionMatches: true,
             foldGutter: false,
-            autocompletion: false, // Важно!
-            completionKeymap: false // Отключаем хоткеи
+            autocompletion: false,
+            completionKeymap: false,
           }}
           theme={duotoneLight}
           extensions={sql({ completion: false })}
@@ -221,7 +222,7 @@ const Task = () => {
             
             <p className="text-xl text-dirty-red font-gerhaus font-bold tracking-widest">Результат</p>
             <button
-              className={cn({"bg-wow-red": stateRun=='executed', "hover:bg-dirty-red": stateRun=='executed', "bg-wow-gray": stateRun!=='executed'}, "text-white", "font-moscow", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
+              className={cn({"bg-wow-red": stateRun=='executed' && stateSubmit === 'filling', "hover:bg-dirty-red": stateRun=='executed' && stateSubmit === 'filling', "bg-wow-gray": stateRun!=='executed' || stateSubmit === 'sending'}, "text-white", "font-moscow", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
               type="submit"
               disabled={stateRun!=='executed'}
               onClick={handleSubmit}
@@ -230,7 +231,7 @@ const Task = () => {
             </button>
           </div>
           {result? <Table data={result}/> : <p className="text-lg text-dirty-red font-moscow">{error}</p>}
-          {data.isSolved && <p className="text-lg text-dirty-red font-moscow mt-3 mb-2"><span className="font-gerhaus">*</span> Баллы начисляться не будут, но достижения все еще можно получить</p>}
+          {data.isSolved && <p className="text-lg text-dirty-red font-moscow mt-6 mb-2"><span className="font-gerhaus">*</span> Баллы начисляться не будут, но достижения все еще можно получить</p>}
         </div>
         <div className="flex justify-center mt-10">
           <Link to="/missions" className={cn("border", "border-wow-gray", "hover:bg-wow-gray", "hover:border-wow-gray", "hover:text-white", "text-wow-gray", "font-moscow", "py-2", "px-4", "rounded", "transition", "duration-150", "ease-in-out")}>
@@ -238,7 +239,12 @@ const Task = () => {
           </Link>
         </div>
       </div>
-      {toast}
+      <Toaster
+        position="top-right"
+        containerStyle={{
+          top: '3vw',
+        }}
+      />
     </div>
   );
 };
