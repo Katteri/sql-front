@@ -4,5 +4,6 @@
 - React
 - Webpack
 - Tailwind CSS
-- CodeMirror (for SQL editor)
 - Axios
+- CodeMirror (for SQL editor)
+- React Hot Toast (for popups)
