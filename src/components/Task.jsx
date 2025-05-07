@@ -41,8 +41,11 @@ const Task = () => {
           title: response.data.title,
           description: response.data.description,
           isSolved: response.data.is_solved,
+          has_clue1: response.data.has_clue1,
+          has_clue2: response.data.has_clue2,
         };
         setData(newData);
+        
       } catch (error) {
         console.log(error.response.data.detail);
         // что-то делать с ошибкой
@@ -89,7 +92,7 @@ const Task = () => {
       const AuthStr = `Bearer ${accessToken}`;
       const response = await api.post(`/missions/${missionID}/tasks/${taskID}/submit/`, { sql_query: query }, { 'headers': { 'Authorization': AuthStr } });
       const recieved = response.data;
-      console.log(recieved);
+
       setScore(recieved.current_points);
       if (recieved.is_correct) {
         setData({...data, isSolved: true});
@@ -127,18 +130,37 @@ const Task = () => {
 
   const handleClue = async(e) => {
     e.preventDefault();
-    const response = await api.get(`/missions/${missionID}/tasks/${taskID}/clue`); // потом добавится работа с баллами
+    const AuthStr = `Bearer ${accessToken}`;
+    const response = await api.post(`/missions/${missionID}/tasks/${taskID}/clue`, {}, { 'headers': { 'Authorization': AuthStr } });
+    
     setClue(response.data.clue);
+
+    if (response.data.points_spent !== 0) {
+      toast.success(<span>- {response.data.points_spent} баллов</span>, {
+        icon: '⚠️',
+      });
+      setScore(response.data.total_score);
+    };    
   }
 
   const handleExpectedResult = async(e) => {
     e.preventDefault();
-
-    const response = await api.get(`missions/${missionID}/tasks/${taskID}/expected_result`); // потом добавится работа с баллами
+    const AuthStr = `Bearer ${accessToken}`;
+    const response = await api.post(`missions/${missionID}/tasks/${taskID}/expected_result`, {}, { 'headers': { 'Authorization': AuthStr } });
     const recieved = response.data.expected_result;
 
     setExpectedResult(recieved);
+
+    if (response.data.points_spent !== 0) {
+      toast.success(<span>- {response.data.points_spent} баллов</span>, {
+        icon: '⚠️',
+      });
+      setScore(response.data.total_score);
+    };
   }
+
+  const isButtonActive = data.has_clue2 && !expectedResult ? true : (clue && !expectedResult && !data.isSolved);
+  const isDisabled = data.has_clue2 && !expectedResult ? false : (!clue || (clue && expectedResult) || data.isSolved);
 
   return (
     <div className="bg-sand w-full min-h-screen">
@@ -188,14 +210,18 @@ const Task = () => {
           <div>
             <button
               className={cn({"hover:bg-dirty-red": !clue && !data.isSolved, "bg-wow-red": !clue && !data.isSolved, "bg-wow-gray": clue || data.isSolved}, "text-white", "font-moscow", "py-2", "px-4", "rounded", "transition", "duration-150", "ease-in-out", "mr-4")}
-              disabled={clue || data.isSolved} //false когда хватает баллов
+              disabled={clue || data.isSolved}
               onClick={handleClue}
             >
               Подсказка
             </button>
             <button
-              className={cn({"hover:bg-dirty-red": clue && !expectedResult && !data.isSolved, "bg-wow-red": clue && !expectedResult && !data.isSolved, "hover:text-white": clue && !expectedResult && !data.isSolved, "bg-wow-gray": !clue || expectedResult || data.isSolved}, "text-white", "font-moscow", "py-2", "px-4", "rounded", "transition", "duration-150", "ease-in-out")}
-              disabled={!clue || clue && expectedResult || data.isSolved} //false когда взята подсказка1 и хватает баллов
+              className={cn({
+                "hover:bg-dirty-red": isButtonActive,
+                "bg-wow-red": isButtonActive,
+                "bg-wow-gray": !isButtonActive
+              }, "text-white", "font-moscow", "py-2", "px-4", "rounded", "transition", "duration-150", "ease-in-out")}
+              disabled={isDisabled}
               onClick={handleExpectedResult}
             >
               Ожидаемый результат
