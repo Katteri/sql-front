@@ -10,6 +10,7 @@ const MainPage = () => {
   useEffect(() => {
     const getRating = async () => {
       const response = await api.get('/rating/');
+      console.log(response.data.top_users);
       setRating(response.data.top_users);
     };
     getRating();
@@ -52,6 +53,12 @@ WHERE г.награда = 'Орден Победы'
               <div key={person.place} className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
                 <p className="text-2xl text-dirty-red w-20">{person.place}</p>
                 <p className="text-xl  text-dirty-red">{person.login}</p>
+                {person.achievement_icons.length > 0 ? 
+                  <div className='flex flex-row'>
+                    {person.achievement_icons.map(icon => <p key={icon} className='text-lg font-emoji'>{icon}</p>)}
+                  </div>
+                  : null
+                }
                 <p className="text-2xl text-dirty-red ml-auto px-4">{person.total_score}</p>
               </div>
             ) : <p className="text-lg text-dirty-red">Пока игроков нет</p>}
