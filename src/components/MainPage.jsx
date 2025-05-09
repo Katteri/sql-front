@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CodeMirror from "@uiw/react-codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { duotoneLight } from "@uiw/codemirror-theme-duotone";
+import { toast } from "react-hot-toast";
 import api from './utils/api';
 
 const MainPage = () => {
@@ -9,9 +10,13 @@ const MainPage = () => {
 
   useEffect(() => {
     const getRating = async () => {
-      const response = await api.get('/rating/');
-      console.log(response.data.top_users);
-      setRating(response.data.top_users);
+      try {
+        const response = await api.get('/rating/');
+        console.log(response.data.top_users);
+        setRating(response.data.top_users);
+      } catch (error) {
+        toast(error.message);
+      }
     };
     getRating();
   }, []);

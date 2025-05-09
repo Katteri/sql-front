@@ -52,8 +52,7 @@ const Profile = () => {
 
         setData(newData);
       } catch (error) {
-        console.log(error.response.data.detail);
-        // что-то делать с ошибкой
+        toast(error.message);
       }
     }
 

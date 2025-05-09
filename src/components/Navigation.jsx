@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import { useAuth } from "./context/AuthContext";
 
 const Navigation = () => {
@@ -69,6 +70,12 @@ const Navigation = () => {
       </nav>
       <main className="flex-1">
         <Outlet />
+        <Toaster
+          position="top-right"
+          containerStyle={{
+            top: '3vw',
+          }}
+        />
       </main>
     </div>
   );

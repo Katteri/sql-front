@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
+import { Toaster, toast } from "react-hot-toast";
 import api from './utils/api'; 
 
 const Register = () => {
-  const [state, setState] = useState('filling'); // 'sending', 'success', 'failed'
+  const [state, setState] = useState('filling'); // 'sending', 'success'
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -69,8 +70,11 @@ const Register = () => {
         await api.post('/auth/register/', { login: username, email, password });
         setState('success');
       } catch(error) {
-        setState('failed');
-        setServerError(error.response.data.detail);
+        if (error.response?.data?.detail) {
+          setServerError(error.response.data.detail);
+        } else {
+          toast(error.message);
+        }
       }
     }
   }
@@ -164,6 +168,9 @@ const Register = () => {
           </div>          
         </form>
       </div>
+      <Toaster
+        position="top-right"
+      />
     </div>
   );
 }

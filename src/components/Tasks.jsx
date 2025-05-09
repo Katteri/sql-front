@@ -1,5 +1,6 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { toast } from "react-hot-toast";
 import { useAuth } from "./context/AuthContext";
 import api from "./utils/api";
 
@@ -19,8 +20,7 @@ const Tasks = () => {
         setData(response.data.missions);
         setDataShow(response.data.missions);
       } catch (error) {
-        console.log(error.response.data.detail);
-        // что-то делать с ошибкой
+        toast(error.message);
       }
     };
     getData();

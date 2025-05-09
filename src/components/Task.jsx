@@ -47,8 +47,7 @@ const Task = () => {
         setData(newData);
         
       } catch (error) {
-        console.log(error.response.data.detail);
-        // что-то делать с ошибкой
+        toast(error.message);
       }
     };
     getData();
@@ -77,8 +76,12 @@ const Task = () => {
         setResult(response.data);
         
       } catch (error) {
-        setError(error.response.data.detail);
         setResult(null);
+        if (error.response?.data?.detail) {
+          setError(error.response.data.detail);
+        } else {
+          toast(error.message);
+        }
       }
       setStateRun('executed');
     }
@@ -123,7 +126,11 @@ const Task = () => {
         );
       }
     } catch (error) {
-      setError(error.response.data.detail);
+      if (error.response?.data?.detail) {
+        setError(error.response.data.detail);
+      } else {
+        toast(error.message);
+      }
     }
     setStateSubmit('filling');
   }
@@ -131,32 +138,42 @@ const Task = () => {
   const handleClue = async(e) => {
     e.preventDefault();
     const AuthStr = `Bearer ${accessToken}`;
-    const response = await api.post(`/missions/${missionID}/tasks/${taskID}/clue`, {}, { 'headers': { 'Authorization': AuthStr } });
+    try {
+      const response = await api.post(`/missions/${missionID}/tasks/${taskID}/clue`, {}, { 'headers': { 'Authorization': AuthStr } });
     
-    setClue(response.data.clue);
+      setClue(response.data.clue);
 
-    if (response.data.points_spent !== 0) {
-      toast.success(<span>- {response.data.points_spent} баллов</span>, {
-        icon: '⚠️',
-      });
-      setScore(response.data.total_score);
-    };    
+      if (response.data.points_spent !== 0) {
+        toast.success(<span>- {response.data.points_spent} баллов</span>, {
+          icon: '⚠️',
+        });
+        setScore(response.data.total_score);
+      };
+    } catch (error) {
+      toast(error.message);
+    }
+        
   }
 
   const handleExpectedResult = async(e) => {
     e.preventDefault();
     const AuthStr = `Bearer ${accessToken}`;
-    const response = await api.post(`missions/${missionID}/tasks/${taskID}/expected_result`, {}, { 'headers': { 'Authorization': AuthStr } });
-    const recieved = response.data.expected_result;
+    try {
+      const response = await api.post(`missions/${missionID}/tasks/${taskID}/expected_result`, {}, { 'headers': { 'Authorization': AuthStr } });
+      const recieved = response.data.expected_result;
 
-    setExpectedResult(recieved);
+      setExpectedResult(recieved);
 
-    if (response.data.points_spent !== 0) {
-      toast.success(<span>- {response.data.points_spent} баллов</span>, {
-        icon: '⚠️',
-      });
-      setScore(response.data.total_score);
-    };
+      if (response.data.points_spent !== 0) {
+        toast.success(<span>- {response.data.points_spent} баллов</span>, {
+          icon: '⚠️',
+        });
+        setScore(response.data.total_score);
+      };
+    } catch (error) {
+      toast(error.message);
+    }
+    
   }
 
   const isButtonActive = data.has_clue2 && !expectedResult ? true : (clue && !expectedResult && !data.isSolved);

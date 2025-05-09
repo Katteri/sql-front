@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
+import { Toaster, toast } from "react-hot-toast";
 import { useAuth } from './context/AuthContext';
 import api from './utils/api.js';
 
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [state, setState] = useState('filling'); // 'sending', 'success', 'failed'
+  const [state, setState] = useState('filling'); // 'sending', 'success'
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [serverError, setServerError] = useState('');
@@ -57,8 +58,11 @@ const Login = () => {
         login(response.data.access_token);
         setState('success');
       } catch (error) {
-        setState('failed');
-        setServerError(error.response.data.detail);
+        if (error.response?.data?.detail) {
+          setServerError(error.response.data.detail);
+        } else {
+          toast(error.message);
+        }
       }
 
     }
@@ -132,6 +136,9 @@ const Login = () => {
           </div>          
         </form>
       </div>
+      <Toaster
+        position="top-right"
+      />
     </div>
   );
 }

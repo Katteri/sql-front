@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useAuth } from "./context/AuthContext";
 import Achievement from "./Achievement";
 import api from "./utils/api";
@@ -10,8 +11,12 @@ const Achievements = () => {
   useEffect(() => {
     const AuthStr = `Bearer ${accessToken}`;
     const getData = async () => {
-      const response = await api.get('/achievements/', { 'headers': { 'Authorization': AuthStr } });
-      setData(response.data.categories);
+      try {
+        const response = await api.get('/achievements/', { 'headers': { 'Authorization': AuthStr } });
+        setData(response.data.categories);
+      } catch (error) {
+        toast(error.message);
+      }
     };
     getData();
   }, []);
