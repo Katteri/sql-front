@@ -70,6 +70,23 @@ WHERE г.награда = 'Орден Победы'
           </div>
         </div>
       </section>
+      <section className='mt-28 pb-16 pl-10 pr-20 flex flex-1 flex-col justify-center content-center'>
+        <h2 className="text-8xl text-wow-red font-buran self-center mt-5 mb-10">Как начать?</h2>
+        <div className="text-dirty-red font-moscow mb-8 space-y-4 text-justify text-lg leading-relaxed">
+          <p>
+            Тебе предстоит пройти три миссии, каждая из которых отличается уровнем сложности.
+            Чем больше задач ты решишь, тем больше баллов и достижений получишь — а значит, поднимешься выше в рейтинге.
+          </p>
+          <p>Во время решения ты можешь воспользоваться подсказками:</p>
+          <ul className="list-disc list-inside space-y-1 pl-2">
+            <li>Первая подсказка — от <span className="font-semibold">10 до 50</span> баллов (в зависимости от сложности задачи).</li>
+            <li>Просмотр ожидаемого результата — от <span className="font-semibold">20 до 100</span> баллов.</li>
+          </ul>
+          <p>За правильное решение задачи ты получаешь от <span className="font-semibold">100 до 500</span> баллов, в зависимости от миссии.</p>
+          <p>За неправильное решение — теряешь от <span className="font-semibold">10 до 50</span> баллов. Будь внимателен!</p>
+          <p className="text-xl font-gerhaus font-bold tracking-widest text-center text-dirty-red pt-10">Присоединяйся к «Битве за данные». Учись. Борись. Побеждай.</p>
+        </div>
+      </section>
     </>
   );
 }

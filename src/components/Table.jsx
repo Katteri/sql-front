@@ -3,7 +3,10 @@ import React from "react";
 const Table = ({ data }) => {
   // if (!data || !data.data || !data.columns) return null;
   return (
-    <div className="overflow-x-auto overflow-y-auto max-h-96">
+    <div
+      className="overflow-x-auto overflow-y-auto max-h-96"
+      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+    >
       <table className="w-full font-moscow">
         <thead>
           <tr className="border-b border-dirty-red">

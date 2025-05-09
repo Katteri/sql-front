@@ -7,9 +7,9 @@ import { duotoneLight } from "@uiw/codemirror-theme-duotone";
 import { Toaster, toast } from "react-hot-toast";
 import { useAuth } from "./context/AuthContext";
 import Table from "./Table";
+import DBContainer from "./DBContainer";
 import AchievementToast from "./AchievementToast";
 import api from "./utils/api";
-import databaseSchema from "../assets/image.png";
 
 const Task = () => {
   const { accessToken } = useAuth();
@@ -245,7 +245,7 @@ const Task = () => {
             </button>
           </div>
         </div>
-        {showDB==='show'? <img src={databaseSchema} alt="схема базы данных" className="w-full max-w-4xl mx-auto my-4 rounded"/> : null}
+        {showDB==='show'? <DBContainer /> : null}
         {clue?
           <>
             <p className="text-xl text-dirty-red font-gerhaus font-bold tracking-widest my-6">Подсказка</p>
