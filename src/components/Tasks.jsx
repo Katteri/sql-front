@@ -74,7 +74,7 @@ const Tasks = () => {
       {dataShow ? Object.keys(dataShow).map((missionId) => (
         <div key={missionId} className="flex flex-1 flex-col gap-8 mb-5">
           <div className="flex flex-col mb-8">
-            <p className="text-xl font-gerhaus font-bold tracking-widest text-dirty-red my-3">Миссия {missionId}</p>
+            <p className="text-3xl font-buran font-bold tracking-widest text-dirty-red my-3">Миссия {missionId}</p>
             {dataShow[missionId].map((task) => (
               <div
                 key={task.task_id}
@@ -88,7 +88,7 @@ const Tasks = () => {
             ))}
           </div>
         </div>
-      )) : <p className="text-xl font-gerhaus font-bold tracking-widest text-dirty-red">Нет доступных задач</p>}
+      )) : <p className="text-xl font-moscow text-dirty-red self-center">Нет доступных задач</p>}
 
     </div>
   );

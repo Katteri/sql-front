@@ -27,7 +27,7 @@ const Achievements = () => {
       <div className="flex flex-1 flex-col gap-14">
         {data ? Object.entries(data).map(([category, achievements]) => (
           <div key={category}>
-            <p className="text-xl font-gerhaus font-bold tracking-widest text-dirty-red mb-3">{category}</p>
+            <p className="text-3xl font-buran font-bold tracking-widest text-dirty-red mb-3">{category}</p>
             <div className="flex flex-col gap-5 mb-8">
               {achievements.map((achievement, idx) => (
                 <Achievement
@@ -41,7 +41,7 @@ const Achievements = () => {
               ))}
             </div>
           </div>
-        )) : <p className="text-xl font-gerhaus font-bold tracking-widest text-dirty-red">Пока нет доступных достижений</p>}
+        )) : <p className="text-xl font-moscow text-dirty-red self-center">Пока нет доступных достижений</p>}
       </div>
     </div>
   )

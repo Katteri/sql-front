@@ -40,7 +40,7 @@ const Table = ({ data }) => {
           ))}
         </tbody>
       </table>
-      <p className="mt-3 text-dirty-red text-lg font-moscow">
+      <p className="mt-3 text-dirty-red text-xl font-moscow">
         Всего строк: {data.row_count}
       </p>
     </div>

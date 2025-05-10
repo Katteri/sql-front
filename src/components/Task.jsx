@@ -181,17 +181,17 @@ const Task = () => {
 
   return (
     <div className="bg-sand w-full min-h-screen">
-      <div className="w-3/4 mx-auto pt-5 pb-16 px-10 flex flex-col content-center">
+      <div className="w-3/4 mx-auto pt-8 pb-16 px-10 flex flex-col content-center">
         <div className="flex justify-between">
-          <h3 className="text-xl text-dirty-red font-gerhaus font-bold tracking-widest">Миссия {missionID}.{taskID}</h3>
-          <p className="text-xl text-dirty-red font-gerhaus font-bold tracking-widest">Мои баллы: {score}</p>
+          <h3 className="text-3xl text-dirty-red font-buran font-bold tracking-widest">Миссия {missionID}.{taskID}</h3>
+          <p className="text-3xl text-dirty-red font-buran font-bold tracking-widest">Мои баллы: {score}</p>
         </div>
-        <h2 className="text-6xl mt-3 text-dirty-red font-buran self-center">{data.title}</h2>
+        <h2 className="text-6xl mt-10 text-wow-red font-buran self-center">{data.title}</h2>
         {data.isSolved && <div className="self-center text-center">
-          <p className="text-xl text-wow-red font-gerhaus font-bold tracking-widest mt-3">задача уже решена *</p>
+          <p className="text-3xl text-dirty-red font-buran font-bold tracking-widest mt-3">задача уже решена *</p>
         </div>}
         
-        <p className="text-lg text-dirty-red font-moscow mt-10 mb-5">{data.description}</p>
+        <p className="text-xl text-dirty-red font-moscow mt-16 mb-5">{data.description}</p>
         <CodeMirror
           className="w-full self-center text-base"
           value={value}
@@ -248,14 +248,14 @@ const Task = () => {
         {showDB==='show'? <DBContainer /> : null}
         {clue?
           <>
-            <p className="text-xl text-dirty-red font-gerhaus font-bold tracking-widest my-6">Подсказка</p>
-            <p className="text-lg text-dirty-red font-moscow mb-5">{clue}</p>
+            <p className="text-3xl text-dirty-red font-buran font-bold tracking-widest my-6">Подсказка</p>
+            <p className="text-xl text-dirty-red font-moscow mb-5">{clue}</p>
           </>
           : null
         }
         {expectedResult?
           <div className="mb-6">
-            <p className="text-xl text-dirty-red font-gerhaus font-bold tracking-widest my-6">Ожидаемый результат</p>
+            <p className="text-3xl text-dirty-red font-buran font-bold tracking-widest my-6">Ожидаемый результат</p>
             <Table data={expectedResult}/>
           </div>
           : null
@@ -263,7 +263,7 @@ const Task = () => {
         <div className="pt-5">
           <div className="flex flex-row justify-between py-3">
             
-            <p className="text-xl text-dirty-red font-gerhaus font-bold tracking-widest">Результат</p>
+            <p className="text-3xl text-dirty-red font-buran font-bold tracking-widest">Результат</p>
             <button
               className={cn({"bg-wow-red": stateRun=='executed' && stateSubmit === 'filling', "hover:bg-dirty-red": stateRun=='executed' && stateSubmit === 'filling', "bg-wow-gray": stateRun!=='executed' || stateSubmit === 'sending'}, "text-white", "font-moscow", "py-2", "px-4", "rounded", "focus:outline-none", "focus:shadow-outline")}
               type="submit"
@@ -273,8 +273,8 @@ const Task = () => {
               Отправить
             </button>
           </div>
-          {result? <Table data={result}/> : <p className="text-lg text-dirty-red font-moscow">{error}</p>}
-          {data.isSolved && <p className="text-lg text-dirty-red font-moscow mt-6 mb-2"><span className="font-gerhaus">*</span> Баллы начисляться не будут, но достижения все еще можно получить</p>}
+          {result? <Table data={result}/> : <p className="text-xl text-dirty-red font-moscow">{error}</p>}
+          {data.isSolved && <p className="text-xl text-dirty-red font-moscow mt-6 mb-2"><span className="font-gerhaus">*</span> Баллы начисляться не будут, но достижения все еще можно получить</p>}
         </div>
         <div className="flex justify-center mt-10">
           <Link to="/missions" className={cn("border", "border-wow-gray", "hover:bg-wow-gray", "hover:border-wow-gray", "hover:text-white", "text-wow-gray", "font-moscow", "py-2", "px-4", "rounded", "transition", "duration-150", "ease-in-out")}>

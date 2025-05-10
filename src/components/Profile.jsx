@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import { useAuth } from "./context/AuthContext";
 import api from "./utils/api";
 import ProgressBar from "./ProgressBar";
@@ -62,10 +63,10 @@ const Profile = () => {
   return (
     <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
       <h2 className="text-9xl text-wow-red font-buran self-end mt-10 mb-10">{data.username}</h2>
-      <p className="text-xl font-gerhaus font-bold tracking-widest text-dirty-red mb-20">Баллы: {data.score}</p>
+      <p className="text-3xl font-buran font-bold tracking-widest text-dirty-red mb-20">Баллы: {data.score}</p>
       
       <section id="task-progress" className="mb-24">
-        <p className="text-2xl text-center text-dirty-red font-gerhaus font-bold tracking-widest mb-10">Прогресс по задачам</p>
+        <p className="text-4xl text-center text-dirty-red font-buran font-bold tracking-widest mb-10">Прогресс по задачам</p>
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-x-3 whitespace-nowrap text-dirty-red font-moscow text-xl">
             <div className="w-48 text-start">
@@ -101,9 +102,9 @@ const Profile = () => {
         
       </section>
       <section id="achievement" className="mb-10">
-        <p className="text-2xl text-center text-dirty-red font-gerhaus font-bold tracking-widest mb-10">Мои достижения</p>
+        <p className="text-4xl text-center text-dirty-red font-buran font-bold tracking-widest mb-10">Мои достижения</p>
         <div className="flex flex-col gap-14  text-dirty-red">
-          {Object.entries(data.achievements).length === 0 && <p className="text-xl font-gerhaus font-bold tracking-widest text-dirty-red">Решайте задачи, чтобы получать достижения</p>}
+          {Object.entries(data.achievements).length === 0 && <p className="font-moscow text-xl text-dirty-red">Решайте задачи, чтобы получать достижения</p>}
           {Object.entries(data.achievements).map(([category, achievements]) => (
             <div key={category}>
               <p className="text-xl font-gerhaus tracking-widest font-bold mb-3">{category}</p>

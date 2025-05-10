@@ -9,12 +9,6 @@
 }
 
 @font-face {
-  font-family: 'Gerhaus';
-  src: url('../assets/fonts/Gerhaus.ttf') format('truetype');
-  font-display: fallback;
-}
-
-@font-face {
   font-family: 'Moscow Sans';
   src: url('../assets/fonts/moscowsansregular.ttf') format('truetype');
   font-display: fallback;
