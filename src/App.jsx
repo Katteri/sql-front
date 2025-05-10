@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './components/context/AuthContext';
 import MainPage from './components/MainPage'
@@ -12,8 +12,23 @@ import Task from './components/Task';
 import Quest from './components/Quest';
 
 import Navigation from './components/Navigation';
+import MobileBlock from './components/utils/MobileBlock';
+
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
 
 const App = () => {
+  const [blocked, setBlocked] = useState(false);
+
+  useEffect(() => {
+    if (isMobile()) {
+      setBlocked(true);
+    }
+  }, []);
+
+  if (blocked) return <MobileBlock />;
+
   return (
     <AuthProvider>
       <BrowserRouter basename="/">
