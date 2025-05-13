@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://192.168.1.206:8000/api/',
+  // baseURL: `${process.env.BACKEND_URL}/api/`,
+  baseURL: 'https://blissful-amazement-production.up.railway.app/api/',
 });
 
 export default api;

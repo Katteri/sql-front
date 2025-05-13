@@ -141,7 +141,7 @@ const DBContainer = () => {
         className="bg-wow-red hover:bg-dirty-red text-white font-moscow py-2 px-4 mb-4 mt-2 rounded transition duration-150 ease-in-out"
         onClick={() => showDescription === 'hide'? setShowDescription('show') : setShowDescription('hide')}
       >
-        {showDescription === 'hide'? 'Показать схему БД' : 'Показать описание БД'}
+        {showDescription === 'show'? 'Показать схему БД' : 'Показать описание БД'}
       </button>
     </div>
   );

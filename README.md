@@ -1,5 +1,8 @@
 # SQL-Front Frontend
 
+## About
+Фронтенд веб-приложения для решения задач по SQL на тематику Великой Отечественной Войны. Цель проекта – повышение патриотического воспитания у студентов IT-специальностей.
+
 ## Stack
 - React
 - Webpack
@@ -20,3 +23,7 @@ Run the command: `make install`.
 make develop
 ```
 On localhost:9000
+
+## Authors
+- [Ekaterina Domashova](https://github.com/katteri) - frontend
+- [Valerie Taranova](https://github.com/tarvarrs) - backend

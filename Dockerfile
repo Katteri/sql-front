@@ -1,5 +1,5 @@
 # Этап 1: сборка приложения
-FROM node:22-alpine AS builder
+FROM --platform=linux/amd64 node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -10,13 +10,13 @@ COPY . .
 
 RUN npm run build
 
-# Этап 2: запуск через nginx
 FROM nginx:stable-alpine
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
 
+COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.local.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+RUN nginx -t
 
 CMD ["nginx", "-g", "daemon off;"]
