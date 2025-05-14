@@ -12,7 +12,6 @@ const MainPage = () => {
     const getRating = async () => {
       try {
         const response = await api.get('/rating/');
-        console.log(response.data.top_users);
         setRating(response.data.top_users);
       } catch (error) {
         toast(error.message);
