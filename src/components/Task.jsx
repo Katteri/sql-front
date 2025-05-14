@@ -66,6 +66,7 @@ const Task = () => {
     if (!currentValue.toLowerCase().includes('select')) {
       newError = 'Введите корректный SQL запрос';
     }
+    setResult(null);
     setError(newError);
 
     if (!newError) {
@@ -76,7 +77,6 @@ const Task = () => {
         setResult(response.data);
         
       } catch (error) {
-        setResult(null);
         if (error.response?.data?.detail) {
           setError(error.response.data.detail);
         } else {
