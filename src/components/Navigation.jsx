@@ -73,7 +73,7 @@ const Navigation = () => {
         <Toaster
           position="top-right"
           containerStyle={{
-            top: '4vw',
+            top: '3vw',
           }}
         />
       </main>
