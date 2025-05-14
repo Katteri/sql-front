@@ -221,7 +221,7 @@ const Task = () => {
               className={cn("bg-wow-red", "hover:bg-dirty-red", "text-white", "font-moscow", "py-2", "px-4", "rounded", "transition", "duration-150", "ease-in-out")}
               onClick={() => showDB === 'hide'? setShowDB('show') : setShowDB('hide')}
             >
-              {showDB === 'hide'? 'Показать схему БД' : 'Скрыть схему БД'}
+              {showDB === 'hide'? 'Показать БД' : 'Скрыть БД'}
             </button>
           </div>
           <div>

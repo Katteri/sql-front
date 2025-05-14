@@ -16,7 +16,6 @@ const Tasks = () => {
     const getData = async () => {
       try {
         const response = await api.get('/missions/', { 'headers': { 'Authorization': AuthStr } });
-        console.log(response.data.missions);
         setData(response.data.missions);
         setDataShow(response.data.missions);
       } catch (error) {
