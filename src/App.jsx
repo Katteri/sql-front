@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from "react-hot-toast";
 import { AuthProvider } from './components/context/AuthContext';
 import MainPage from './components/MainPage'
 import Login from './components/Login';
@@ -32,6 +33,12 @@ const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter basename="/">
+        <Toaster
+          position="top-right"
+          containerStyle={{
+            top: '4vw',
+          }}
+        />
         <Routes>
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />

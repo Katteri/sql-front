@@ -33,35 +33,7 @@ export default {
           },
         },
       },
-      // { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] },
-      {
-        test: /\.css$/,
-        exclude: /node_modules\/react-hot-toast/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              modules: false,
-            },
-          },
-          'postcss-loader',
-        ],
-      },
-      {
-        test: /\.css$/,
-        include: /node_modules\/react-hot-toast/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-            },
-          },
-          'postcss-loader',
-        ],
-      },
+      { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] },
       {
         test: /\.(woff(2)?|ttf|eot|otf|svg)$/,
         type: 'asset/resource',
