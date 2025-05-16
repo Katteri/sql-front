@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import CodeMirror from "@uiw/react-codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { duotoneLight } from "@uiw/codemirror-theme-duotone";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useAuth } from "./context/AuthContext";
 import Table from "./Table";
 import DBContainer from "./DBContainer";
@@ -282,12 +282,6 @@ const Task = () => {
           </Link>
         </div>
       </div>
-      <Toaster
-        position="top-right"
-        containerStyle={{
-          top: '3vw',
-        }}
-      />
     </div>
   );
 };
