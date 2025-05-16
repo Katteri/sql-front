@@ -22,8 +22,8 @@ const Navigation = () => {
 
   return (
     <div className="bg-sand min-h-screen">
-      <nav className="w-full bg-wow-white text-wow-gray sticky top-0 z-10">
-        <ul className="flex flex-row justify-end gap-5 px-8 py-2 font-buran text-2xl tracking-widest">
+      <nav className="w-full h-[3vw] bg-wow-white text-wow-gray sticky top-0 z-10">
+        <ul className="h-full flex flex-row justify-end items-center gap-5 px-8 py-2 font-buran text-2xl tracking-widest">
           {!accessToken ? (
             <>
               <li>
@@ -73,7 +73,7 @@ const Navigation = () => {
         <Toaster
           position="top-right"
           containerStyle={{
-            top: '3vw',
+            top: '3.5vw',
           }}
         />
       </main>

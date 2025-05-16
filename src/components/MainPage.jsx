@@ -28,7 +28,7 @@ const MainPage = () => {
           <p className='text-dirty-red font-buran font-bold tracking-widest text-3xl justify-end mb-14'>Освой SQL, вспоминая подвиги Победы</p>
         </div>
         <div className='text-xl font-moscow text-dirty-red flex flex-col justify-between content-center w-4/5 mb-8'>
-          <p>Великая Отечественная война не только испытание, но и величайшее наследие мужества, стратегии и силы разума.<br/>  
+          <p>Великая Отечественная война — не только испытание, но и величайшее наследие мужества, стратегии и силы разума.<br/>  
             Сегодня мы приглашаем тебя продолжить ту борьбу — не с оружием, а с данными. В роли фронтового аналитика ты узнаешь, как знания и логика могут стать мощным оружием в любые времена.</p>
         </div>
         <CodeMirror
