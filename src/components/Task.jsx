@@ -28,6 +28,8 @@ const Task = () => {
   const [error, setError] = useState('Выполните запрос, чтобы увидеть результат');
   const [clue, setClue] = useState('');
   const [expectedResult, setExpectedResult] = useState(null);
+  const [clueVisible, setClueVisible] = useState(false);
+  const [expectedVisible, setExpectedVisible] = useState(false);
 
   useEffect(() => {
     const AuthStr = `Bearer ${accessToken}`;
@@ -137,12 +139,17 @@ const Task = () => {
 
   const handleClue = async(e) => {
     e.preventDefault();
+    if (clue) {
+      setClueVisible(prev => !prev);
+      return;
+    }
+
     const AuthStr = `Bearer ${accessToken}`;
     try {
       const response = await api.post(`/missions/${missionID}/tasks/${taskID}/clue`, {}, { 'headers': { 'Authorization': AuthStr } });
     
       setClue(response.data.clue);
-
+      setClueVisible(true);
       if (response.data.points_spent !== 0) {
         toast.success(<span>- {response.data.points_spent} баллов</span>, {
           icon: '⚠️',
@@ -157,13 +164,19 @@ const Task = () => {
 
   const handleExpectedResult = async(e) => {
     e.preventDefault();
+
+    if (expectedResult) {
+      setExpectedVisible(prev => !prev);
+      return;
+    }
+
     const AuthStr = `Bearer ${accessToken}`;
     try {
       const response = await api.post(`missions/${missionID}/tasks/${taskID}/expected_result`, {}, { 'headers': { 'Authorization': AuthStr } });
       const recieved = response.data.expected_result;
 
       setExpectedResult(recieved);
-
+      setExpectedVisible(true);
       if (response.data.points_spent !== 0) {
         toast.success(<span>- {response.data.points_spent} баллов</span>, {
           icon: '⚠️',
@@ -176,8 +189,8 @@ const Task = () => {
     
   }
 
-  const isButtonActive = data.has_clue2 && !expectedResult ? true : (clue && !expectedResult && !data.isSolved);
-  const isDisabled = data.has_clue2 && !expectedResult ? false : (!clue || (clue && expectedResult) || data.isSolved);
+  const isClueAvailable = !data.isSolved;
+  const isExpectedAvailable = (clue || data.has_clue2) && !data.isSolved;
 
   return (
     <div className="bg-sand w-full min-h-screen">
@@ -226,19 +239,29 @@ const Task = () => {
           </div>
           <div>
             <button
-              className={cn({"hover:bg-dirty-red": !clue && !data.isSolved, "bg-wow-red": !clue && !data.isSolved, "bg-wow-gray": clue || data.isSolved}, "text-white", "font-moscow", "py-2", "px-4", "rounded", "transition", "duration-150", "ease-in-out", "mr-4")}
-              disabled={clue || data.isSolved}
+              className={cn(
+                {
+                  "hover:bg-dirty-red": isClueAvailable,
+                  "bg-wow-red": isClueAvailable,
+                  "bg-wow-gray": !isClueAvailable,
+                },
+                "text-white font-moscow py-2 px-4 rounded transition duration-150 ease-in-out mr-4"
+              )}
+              disabled={!isClueAvailable}
               onClick={handleClue}
             >
               Подсказка
             </button>
             <button
-              className={cn({
-                "hover:bg-dirty-red": isButtonActive,
-                "bg-wow-red": isButtonActive,
-                "bg-wow-gray": !isButtonActive
-              }, "text-white", "font-moscow", "py-2", "px-4", "rounded", "transition", "duration-150", "ease-in-out")}
-              disabled={isDisabled}
+              className={cn(
+                {
+                  "hover:bg-dirty-red": isExpectedAvailable,
+                  "bg-wow-red": isExpectedAvailable,
+                  "bg-wow-gray": !isExpectedAvailable,
+                },
+                "text-white font-moscow py-2 px-4 rounded transition duration-150 ease-in-out"
+              )}
+              disabled={!isExpectedAvailable}
               onClick={handleExpectedResult}
             >
               Ожидаемый результат
@@ -246,14 +269,14 @@ const Task = () => {
           </div>
         </div>
         {showDB==='show'? <DBContainer /> : null}
-        {clue?
+        {clueVisible?
           <>
             <p className="text-3xl text-dirty-red font-buran font-bold tracking-widest my-6">Подсказка</p>
             <p className="text-xl text-dirty-red font-moscow mb-5">{clue}</p>
           </>
           : null
         }
-        {expectedResult?
+        {expectedVisible?
           <div className="mb-6">
             <p className="text-3xl text-dirty-red font-buran font-bold tracking-widest my-6">Ожидаемый результат</p>
             <Table data={expectedResult}/>
@@ -274,7 +297,7 @@ const Task = () => {
             </button>
           </div>
           {result? <Table data={result}/> : <p className="text-xl text-dirty-red font-moscow">{error}</p>}
-          {data.isSolved && <p className="text-xl text-dirty-red font-moscow mt-6 mb-2"><span className="font-gerhaus">*</span> Баллы начисляться не будут, но достижения все еще можно получить</p>}
+          {data.isSolved && <p className="text-xl text-dirty-red font-moscow mt-6 mb-2">* Баллы начисляться не будут, но достижения все еще можно получить</p>}
         </div>
         <div className="flex justify-center mt-10">
           <Link to="/missions" className={cn("border", "border-wow-gray", "hover:bg-wow-gray", "hover:border-wow-gray", "hover:text-white", "text-wow-gray", "font-moscow", "py-2", "px-4", "rounded", "transition", "duration-150", "ease-in-out")}>
