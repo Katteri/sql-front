@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const backendUrl = $BACKEND_URL;
+
 const api = axios.create({
-  // baseURL: `${process.env.BACKEND_URL}/api/`,
-  baseURL: 'https://blissful-amazement-production.up.railway.app/api/',
+  baseURL: `${backendUrl}/api/`,
+  withCredentials: true,
 });
 
 export default api;

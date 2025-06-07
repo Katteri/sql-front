@@ -9,12 +9,16 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [fullname, setFullname] = useState('');
+  const [group, setGroup] = useState('');
   const [serverError, setServerError] = useState('');
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     email: '',
     username: '',
     password: '',
+    fullname: '',
+    group: '',
   });
 
   const handleEmailChange = (e) => {
@@ -29,10 +33,32 @@ const Register = () => {
     setPassword(e.target.value.replace(' ', ''));
   };
 
+  const handleFullnameChange = (e) => {
+    setFullname(e.target.value);
+  };
+
+  const handleGroupChange = (e) => {
+    setGroup(e.target.value);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
+
+    const regFullname = new RegExp('^[а-яёА-ЯЁ\s-]{1,90}$', 'g');
+    if (!regFullname.test(fullname) && fullname.length > 0) {
+      newErrors.fullname = 'Некорректное ФИО';
+    } else {
+      newErrors.fullname = '';
+    }
+
+    const regGroup = new RegExp('^[ЁёА-я]{4}-\d{2}-\d{2}$', 'g');
+    if (!regGroup.test(group) && group.length > 0) {
+      newErrors.group = 'Некорректная группа';
+    } else {
+      newErrors.group = '';
+    }
 
     const regEmail = new RegExp('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', 'g');
     if (email.length === 0) {
@@ -67,7 +93,7 @@ const Register = () => {
       setState('sending');
 
       try {
-        await api.post('/auth/register/', { login: username, email, password });
+        await api.post('/auth/register/', { login: username, email, password, fullname, group });
         setState('success');
       } catch(error) {
         if (error.response?.data?.detail) {
@@ -87,12 +113,49 @@ const Register = () => {
 
   return (
     <div className="w-screen h-screen bg-sand flex flex-col flex-wrap justify-center content-center">
-      <p className='text-8xl text-wow-red font-buran'>SQL Фронт</p>
-      <div className="w-full max-w-xs self-center">
+      {/* <p className='text-8xl text-wow-red font-buran self-center'>SQL Фронт</p> */}
+      <div className="w-full max-w-md self-center">
         <form
           className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 text-dirty-red font-moscow"
           onSubmit={handleSubmit}
         >
+          <div className="mb-4">
+            <label
+              className="block mb-2"
+              htmlFor="fullname"
+            >
+              ФИО
+            </label>
+            <input
+              className={cn('shadow', 'appearance-none', 'border', 'rounded', 'w-full', 'py-2', 'px-3', 'text-wow-black', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline')}
+              id="fullname"
+              type="text"
+              placeholder="Иванов Иван Иванович"
+              value={fullname}
+              onChange={handleFullnameChange}
+              disabled={state==='sending'}
+              autoComplete='name'
+            />
+            {errors.fullname.length > 0? <p className="text-wow-red text-xs italic">{errors.fullname}</p> : null}
+          </div>
+          <div className="mb-4">
+            <label
+              className="block mb-2"
+              htmlFor="group"
+            >
+              Группа
+            </label>
+            <input
+              className={cn('shadow', 'appearance-none', 'border', 'rounded', 'w-full', 'py-2', 'px-3', 'text-wow-black', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline')}
+              id="group"
+              type="text"
+              placeholder="ББОО-01-22"
+              value={group}
+              onChange={handleGroupChange}
+              disabled={state==='sending'}
+            />
+            {errors.group.length > 0? <p className="text-wow-red text-xs italic">{errors.group}</p> : null}
+          </div>
           <div className="mb-4">
             <label
               className="block mb-2"

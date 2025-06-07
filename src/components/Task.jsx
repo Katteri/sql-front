@@ -157,7 +157,12 @@ const Task = () => {
         setScore(response.data.total_score);
       };
     } catch (error) {
-      toast(error.message);
+      const message = error.response.data.detail;
+      if (message) {
+        toast(message);
+      } else {
+        toast(error.message);
+      }
     }
         
   }
@@ -184,7 +189,12 @@ const Task = () => {
         setScore(response.data.total_score);
       };
     } catch (error) {
-      toast(error.message);
+      const message = error.response.data.detail;
+      if (message) {
+        toast(message);
+      } else {
+        toast(error.message);
+      }
     }
     
   }

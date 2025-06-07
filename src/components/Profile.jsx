@@ -33,7 +33,6 @@ const Profile = () => {
         const responseProgress = await api.get('/profile/tasks_progress/', { 'headers': { 'Authorization': AuthStr } });
         const responseTasks = await api.get('/missions/get_info/');
         const responseAchievements = await api.get('/profile/achievements/', { 'headers': { 'Authorization': AuthStr } });
-        
 
         const newData = {
           username: responseProfile.data.login,

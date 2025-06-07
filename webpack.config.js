@@ -3,17 +3,9 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import webpack from 'webpack';
-import dotenv from 'dotenv';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
-
-const env = dotenv.config().parsed || {};
-
-const envKeys = Object.keys(env).reduce((acc, key) => {
-  acc[`process.env.${key}`] = JSON.stringify(env[key]);
-  return acc;
-}, {});
 
 export default {
   mode: process.env.NODE_ENV || 'development',
@@ -55,6 +47,9 @@ export default {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
+    fallback: {
+      "process": false
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -62,7 +57,12 @@ export default {
       favicon: './src/assets/favicon.png',
     }),
     new MiniCssExtractPlugin(),
-    new webpack.DefinePlugin(envKeys),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env)
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser'
+    })
   ],
   output: {
     clean: true,
@@ -73,7 +73,7 @@ export default {
   devServer: {
     historyApiFallback: true,
     static: path.resolve(dirname, 'dist'),
-    port: env.PORT || 9000,
+    port: process.env.PORT || 9000,
     hot: true,
     open: true,
   },

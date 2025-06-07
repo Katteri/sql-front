@@ -3,9 +3,12 @@ import CodeMirror from "@uiw/react-codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { duotoneLight } from "@uiw/codemirror-theme-duotone";
 import { toast } from "react-hot-toast";
+import { useAuth } from "./context/AuthContext";
 import api from './utils/api';
 
 const MainPage = () => {
+  const { accessToken } = useAuth();
+  const [currentUser, setCurrentUser] = useState(null);
   const [rating, setRating] = useState([]);
 
   useEffect(() => {
@@ -15,6 +18,16 @@ const MainPage = () => {
         setRating(response.data.top_users);
       } catch (error) {
         toast(error.message);
+      }
+      
+      if (accessToken) {
+        const AuthStr = `Bearer ${accessToken}`;
+        try {
+          const response = await api.get('/rating/personal', { 'headers': { 'Authorization': AuthStr } });
+          setCurrentUser(response.data);
+        } catch (error) {
+          toast(error.message);
+        }
       }
     };
     getRating();
@@ -52,11 +65,47 @@ WHERE г.награда = 'Орден Победы'
         <div className="w-3/4 mx-auto py-5 px-10 flex flex-col content-center">
           <h2 className="text-8xl text-wow-red font-buran self-center mt-5 mb-4">Рейтинг</h2>
           <p className="text-3xl font-buran font-bold tracking-widest text-dirty-red self-center mb-12">Топ-10 лучших игроков</p>
-          <div className="flex flex-col gap-2 font-moscow tracking-wide">
-            {rating.length > 0 ? rating.map(person =>
+          <div className="flex flex-col font-moscow tracking-wide">
+            {rating.length > 0 || currentUser ? (
+              <>
+                {currentUser && !rating.some(person => person.login === currentUser.login) && (
+                  <div key="current-user" className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center bg-opacity-10 bg-dirty-red pb-2">
+                    <p className="text-2xl text-dirty-red w-20">{currentUser.place}</p>
+                    <p className="text-xl text-dirty-red">
+                      {currentUser.fullname ? `${currentUser.fullname} ${currentUser.group}` : currentUser.login}
+                    </p>
+                    {currentUser.achievement_icons.length > 0 ? 
+                      <div className='flex flex-row'>
+                        {currentUser.achievement_icons.map(icon => <p key={icon} className='text-lg font-emoji'>{icon}</p>)}
+                      </div>
+                      : null
+                    }
+                    <p className="text-2xl text-dirty-red ml-auto px-4">{currentUser.total_score}</p>
+                  </div>
+                )}
+                <div className="flex flex-col gap-2 font-moscow tracking-wide">
+                {rating.map(person =>
+                  <div key={person.place} className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
+                    <p className="text-2xl text-dirty-red w-20">{person.place}</p>
+                    <p className="text-xl text-dirty-red">{person.fullname ? `${person.fullname} ${person.group}` : person.login}</p>
+                    {person.achievement_icons.length > 0 ? 
+                      <div className='flex flex-row'>
+                        {person.achievement_icons.map(icon => <p key={icon} className='text-lg font-emoji'>{icon}</p>)}
+                      </div>
+                      : null
+                    }
+                    <p className="text-2xl text-dirty-red ml-auto px-4">{person.total_score}</p>
+                  </div>
+                )}
+                </div>
+              </>
+            ) : (
+              <p className="text-xl text-dirty-red text-center mt-5">Пока игроков нет</p>
+            )}
+            {/* {rating.length > 0 ? rating.map(person =>
               <div key={person.place} className="border-t pt-2 border-dirty-red flex gap-4 justify-between items-center">
                 <p className="text-2xl text-dirty-red w-20">{person.place}</p>
-                <p className="text-xl  text-dirty-red">{person.login}</p>
+                <p className="text-xl  text-dirty-red">{person.fullname? `${person.fullname} ${person.group}` : person.login}</p>
                 {person.achievement_icons.length > 0 ? 
                   <div className='flex flex-row'>
                     {person.achievement_icons.map(icon => <p key={icon} className='text-lg font-emoji'>{icon}</p>)}
@@ -65,7 +114,7 @@ WHERE г.награда = 'Орден Победы'
                 }
                 <p className="text-2xl text-dirty-red ml-auto px-4">{person.total_score}</p>
               </div>
-            ) : <p className="text-xl text-dirty-red text-center mt-5">Пока игроков нет</p>}
+            ) : <p className="text-xl text-dirty-red text-center mt-5">Пока игроков нет</p>} */}
           </div>
         </div>
       </section>
